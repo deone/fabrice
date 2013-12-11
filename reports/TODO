@@ -1,0 +1,3 @@
+Remove relative file paths, make them absolute.
+Use `uname` to differentiate between dev and prod.
+As part of the build process, copy *.cfg.sh files into ~/fabrice/reports.

@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # DB
 conn_string="abillity_view/abillity_view@TTPROD"
 
@@ -6,5 +8,6 @@ emails_dir="/Users/deone/fabrice/out/emails"
 results_dir="/Users/deone/fabrice/out/results"
 files_dir="/Users/deone/fabrice/out/files"
 
-# email :-)
-culprits="osikoya.oladayo@tecnotree.com"
+# email
+recipients="osikoya.oladayo@tecnotree.com"
+cc=""

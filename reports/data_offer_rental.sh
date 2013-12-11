@@ -1,8 +1,26 @@
 #!/bin/sh
 
-. $(dirname $0)/include/prereqs.sh
+# Fetch environment variables and load appropriate config file
+if [ "$OSTYPE" == "darwin13" ]; then
+    export FABRICE_DEBUG="true"
+elif [ "$OSTYPE" == "linux-gnu" ]; then
+    export FABRICE_DEBUG="false"
+fi
 
-if date -v -1m > /dev/null 2>&1; then
+year=`date +%Y`
+
+dev_path="/Users/deone/.virtualenvs/fabrice/fabrice/reports/"
+prod_path="/home/pm_client/"
+
+if [ "$FABRICE_DEBUG" == "true" ]; then
+    . ${dev_path}reports.dev.cfg.sh
+    . ${dev_path}include/sql_statements.sh
+else
+    . ${prod_path}fabrice/reports/reports.cfg.sh
+    . ${prod_path}fabrice/reports/include/sql_statements.sh
+fi
+
+if [ "$FABRICE_DEBUG" == "true" ]; then
     month=`date -v -1m +%B`
 else
     month=`date +%B -d last-month`
@@ -42,4 +60,4 @@ Tecnotree MSO Team.
 EOF
 
 # Send email
-mutt -a $sql_results -s "Data Offer Rental Report For $month $year" -- $recipients -c $culprits < $email
+mutt -a $sql_results -s "Data Offer Rental Report For $month $year" -- $recipients -c $cc < $email

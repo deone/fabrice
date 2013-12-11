@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if date -v -1m > /dev/null 2>&1; then
+if [ "$FABRICE_DEBUG" == "true" ]; then
     month=`date -v -1m +%m`
 else
     month=`date +%m -d last-month`
