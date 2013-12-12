@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Fetch environment variables and load appropriate config file
+# Set env. var to differentiate between dev and production
 if [ "$OSTYPE" == "darwin13" ]; then
     export FABRICE_DEBUG="true"
 elif [ "$OSTYPE" == "linux-gnu" ]; then
@@ -12,12 +12,13 @@ year=`date +%Y`
 dev_path="/Users/deone/.virtualenvs/fabrice/fabrice/reports/"
 prod_path="/home/pm_client/"
 
+# Load config and SQL library
 if [ "$FABRICE_DEBUG" == "true" ]; then
     . ${dev_path}reports.dev.cfg.sh
-    . ${dev_path}include/sql_statements.sh
+    . ${dev_path}include/queries.sh
 else
     . ${prod_path}fabrice/reports/reports.cfg.sh
-    . ${prod_path}fabrice/reports/include/sql_statements.sh
+    . ${prod_path}fabrice/reports/include/queries.sh
 fi
 
 if [ "$FABRICE_DEBUG" == "true" ]; then
