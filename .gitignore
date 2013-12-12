@@ -36,4 +36,7 @@ nosetests.xml
 .pydevproject
 
 # Legacy code
-former/
+former
+
+# Output files
+out

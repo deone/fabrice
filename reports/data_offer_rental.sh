@@ -3,23 +3,17 @@
 # Set env. var to differentiate between dev and production
 if [ "$OSTYPE" == "darwin13" ]; then
     export FABRICE_DEBUG="true"
+    export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice/"
 elif [ "$OSTYPE" == "linux-gnu" ]; then
     export FABRICE_DEBUG="false"
+    export FABRICE_PATH="/home/pm_client/fabrice/"
 fi
 
 year=`date +%Y`
 
-dev_path="/Users/deone/.virtualenvs/fabrice/fabrice/reports/"
-prod_path="/home/pm_client/"
-
 # Load config and SQL library
-if [ "$FABRICE_DEBUG" == "true" ]; then
-    . ${dev_path}reports.dev.cfg.sh
-    . ${dev_path}include/queries.sh
-else
-    . ${prod_path}fabrice/reports/reports.cfg.sh
-    . ${prod_path}fabrice/reports/include/queries.sh
-fi
+. ${FABRICE_PATH}reports/reports.cfg.sh
+. ${FABRICE_PATH}reports/include/queries.sh
 
 if [ "$FABRICE_DEBUG" == "true" ]; then
     month=`date -v -1m +%B`
@@ -27,7 +21,7 @@ else
     month=`date +%B -d last-month`
 fi
 
-# Files
+# Output files
 sql_results=$results_dir/data_offer_rental_${month}_${year}.csv
 email=$emails_dir/data_offer_rental.mail
 
