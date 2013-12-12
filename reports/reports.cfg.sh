@@ -4,7 +4,7 @@
 conn_string="abillity_view/abillity_view@TTPROD"
 
 # files
-fabrice_out_path="${FABRICE_PATH}out/"
+fabrice_out_path="${FABRICE_PATH}reports/out/"
 
 emails_dir="${fabrice_out_path}emails"
 results_dir="${fabrice_out_path}results"
