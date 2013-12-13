@@ -55,4 +55,5 @@ Tecnotree MSO Team.
 EOF
 
 # Send email
-mutt -a $sql_results -s "Data Offer Rental Report For $month $year" -- $recipients -c $cc < $email
+# This will blow up if cc is an empty string.
+mutt -s "Data Offer Rental Report For $month $year" -c $cc -a $sql_results -- $recipients < $email

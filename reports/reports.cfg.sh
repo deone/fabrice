@@ -12,7 +12,7 @@ files_dir="${fabrice_out_path}files"
 
 # email
 recipients="osikoya.oladayo@tecnotree.com"
-cc=""
+cc="alwaysdeone@gmail.com"
 
 if [ "$FABRICE_DEBUG" == "false" ]; then
     recipients="rjmalm@mtn.com.gh;dtenartey@mtn.com.gh;soakoto@mtn.com.gh;msali@mtn.com.gh;titani@mtn.com.gh;jkbam@mtn.com.gh;abfaisal@mtn.com.gh;dannan@mtn.com.gh;sannan@mtn.com.gh;doseiboateng@mtn.com.gh"
