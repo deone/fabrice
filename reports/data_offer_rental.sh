@@ -9,20 +9,11 @@ elif [ "$OSTYPE" == "linux-gnu" ]; then
     export FABRICE_PATH="/home/pm_client/fabrice/"
 fi
 
-year=`date +%Y`
-
 # Load config and SQL library
 . ${FABRICE_PATH}reports/reports.cfg.sh
-. ${FABRICE_PATH}reports/include/queries.sh
-
-if [ "$FABRICE_DEBUG" == "true" ]; then
-    month=`date -v -1m +%B`
-else
-    month=`date +%B -d last-month`
-fi
 
 # Output files
-sql_results=$results_dir/data_offer_rental_${month}_${year}.csv
+sql_results=$results_dir/data_offer_rental_${month_name}_${year}.csv
 email=$emails_dir/data_offer_rental.mail
 
 echo "Offer Code, Offer Description, Rental Amount" > $sql_results
@@ -33,7 +24,16 @@ set linesize 1000
 set colsep ,
 set pagesize 0
 
-$data_offer_rental_items
+SELECT A.OFFER_CODE_V, A.OFFER_DESC_V, SUM(B.TRANS_AMT_N)/100 RENTAL_AMOUNT 
+FROM CB_OFFERS A, CB_INVOICE_DETAILS B 
+WHERE BILL_CYCLE_FULL_CODE_N =101000001${year}${month_number}0 
+AND A.SCHEME_REF_CODE_N=B.SCHEME_REF_CODE_N 
+AND DB_CR_V='C' 
+AND (B.SCHEME_REF_CODE_N,ARTICLE_CODE_V) IN
+(SELECT SCHEME_REF_CODE_N,ARTICLE_CODE_V FROM CB_SUBSCRIPTION_ARTICLES  WHERE SCHEME_REF_CODE_N IN (
+SELECT SCHEME_REF_CODE_N FROM CB_OFFERS WHERE (OFFER_DESC_V LIKE '%DATA%' OR OFFER_DESC_V LIKE '%BB%' 
+AND CONTRACT_TYPE_N ='N')))
+GROUP BY A.OFFER_CODE_V, A.OFFER_DESC_V, DB_CR_V;
 
 EXIT;
 EOF
@@ -48,7 +48,7 @@ EOF
 cat << EOF > $email
 Hello,
 
-Please find attached the data offer rental report for $month $year.
+Please find attached the data offer rental report for $month_name $year.
 
 Thanks,
 Tecnotree MSO Team.
@@ -56,4 +56,4 @@ EOF
 
 # Send email
 # This will blow up if cc is an empty string.
-mutt -s "Data Offer Rental Report For $month $year" -c $cc -a $sql_results -- $recipients < $email
+mutt -s "Data Offer Rental Report For $month_name $year" -c $cc -a $sql_results -- $recipients < $email
