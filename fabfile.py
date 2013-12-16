@@ -17,7 +17,7 @@ live_cc="jegadeesan.velusamy@tecnotree.com;osikoya.oladayo@tecnotree.com;adetimi
 def deploy():
     # 1. Archive app.
     local("mkdir -p fabrice/reports")
-    local("cp reports/data_offer_rental.sh reports/invoice.sh reports/reports.cfg.sh fabrice/reports/")
+    local("cp reports/data_offer_rental.sh reports/invoice.sh reports/offer_rental.sh reports/package_rental.sh reports/reports.cfg.sh fabrice/reports/")
 
     with lcd("fabrice/reports"):
 	local("mkdir out logs")
@@ -37,11 +37,13 @@ def deploy():
 	run("rm fabrice.zip")
 
 	# Backup crontab with the exception of the jobs to be deployed
-	run("crontab -l | grep -v 'data_offer_rental.sh' | grep -v 'invoice.sh' > tmpcrontab")
+	run("crontab -l | grep -v 'data_offer_rental.sh' | grep -v 'invoice.sh' | grep -v 'offer_rental.sh' | grep -v 'package_rental.sh' > tmpcrontab")
 
 	# Append script's cron job to the crontab backup
 	run("echo '00 12 02 * * sh fabrice/reports/data_offer_rental.sh >> fabrice/reports/logs/data_offer_rental.log 2>&1' >> tmpcrontab")
 	run("echo '00 12 07 * * sh fabrice/reports/invoice.sh >> fabrice/reports/logs/invoice.log 2>&1' >> tmpcrontab")
+	run("echo '00 12 02 * * sh fabrice/reports/offer_rental.sh >> fabrice/reports/logs/offer_rental.log 2>&1' >> tmpcrontab")
+	run("echo '00 12 02 * * sh fabrice/reports/package_rental.sh >> fabrice/reports/logs/package_rental.log 2>&1' >> tmpcrontab")
 
 	# Replace current crontab with backup
 	run("crontab -r")
@@ -58,6 +60,8 @@ def deploy():
 	# Test-run scripts
 	run("sh fabrice/reports/data_offer_rental.sh")
 	run("sh fabrice/reports/invoice.sh")
+	run("sh fabrice/reports/offer_rental.sh")
+	run("sh fabrice/reports/package_rental.sh")
 
 	# Remove test recipients and cc from config
 	run("grep -v '%s' fabrice/reports/reports.cfg.sh | grep -v '%s' >> reports.cfg.sh.backup" % (test_recipients, test_cc))

@@ -13,7 +13,7 @@ elif [ "$OSTYPE" == "linux-gnu" ]; then
     . ~/.bash_profile
 fi
 
-# Load config and SQL library
+# Load config
 . ${FABRICE_PATH}reports/reports.cfg.sh
 
 # Output files
