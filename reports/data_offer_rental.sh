@@ -1,12 +1,16 @@
 #!/bin/sh
 
-# Set env. var to differentiate between dev and production
+# Set/Fetch env. vars on both dev and live
+# Dev
 if [ "$OSTYPE" == "darwin13" ]; then
     export FABRICE_DEBUG="true"
     export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice/"
+    . ~/.profile
+# Live
 elif [ "$OSTYPE" == "linux-gnu" ]; then
     export FABRICE_DEBUG="false"
     export FABRICE_PATH="/home/pm_client/fabrice/"
+    . ~/.bash_profile
 fi
 
 # Load config and SQL library
