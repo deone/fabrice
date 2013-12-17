@@ -21,3 +21,5 @@ else
 fi
 
 # email
+recipients="osikoya.oladayo@tecnotree.com"
+cc="alwaysdeone@gmail.com"
