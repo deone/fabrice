@@ -53,4 +53,4 @@ if [ "$FABRICE_DEBUG" == "false" ]; then
 fi
 
 # Send email
-mutt -s "Toll-free Call Report For $month_name $year" -c $cc -a $sql_results -- $recipients < $email
+mutt -s "Toll-free Calls Report For $month_name $year" -c $cc -a $sql_results -- $recipients < $email

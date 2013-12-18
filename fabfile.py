@@ -7,14 +7,16 @@ env.roledefs = {
 }
 env.shell = '/bin/bash -c'
 
-scripts = [
-    'data_offer_rental.sh',
-    'invoice.sh',
-    'offer_rental.sh',
-    'package_rental.sh',
-    'toll_free_invoice.sh',
-    'toll_free_calls.sh'
-]
+# Map script to schedule time
+script_cron_map = {
+    'data_offer_rental': '00 12 02 * *',
+    'offer_rental': '00 12 02 * *',
+    'package_rental': '00 12 02 * *',
+    'invoice': '00 12 07 * *',
+    'toll_free_invoice': '05 03 05 * *',
+    'toll_free_calls': '05 03 05 * *',
+    'sms_queue': '10 * * * *'
+}
 
 def archive():
     # 1. Archive app.
@@ -35,22 +37,12 @@ def build_grep_string(job_list):
 
 def schedule(job_list):
     # Backup crontab with the exception of the jobs to be deployed
-    job_list = ["'" + job + "'" for job in job_list]
+    job_list = ["'" + job + ".sh'" for job in job_list]
     grep_string = build_grep_string(job_list)
     run("crontab -l%s > tmpcrontab" % grep_string)
 
-    # Map script to schedule time
-    cron_map = {
-	'data_offer_rental': '00 12 02 * *',
-	'offer_rental': '00 12 02 * *',
-	'package_rental': '00 12 02 * *',
-	'invoice': '00 12 07 * *',
-	'toll_free_invoice': '05 03 05 * *'
-	'toll_free_calls': '05 03 05 * *'
-    }
-
     # Append script's cron job to the crontab backup
-    for key, value in cron_map.iteritems():
+    for key, value in script_cron_map.iteritems():
 	run("echo '%s sh fabrice/reports/%s.sh >> fabrice/reports/logs/%s.log 2>&1' >> tmpcrontab" % (value, key, key))
 
     # Replace current crontab with backup
@@ -65,8 +57,8 @@ def test():
     # Test-run scripts
     with hide('running'):
 	local("echo 'Testing scripts locally...'")
-	for script in scripts:
-	    local("sh reports/%s" % script)
+	for script in script_cron_map.iterkeys():
+	    local("sh reports/%s.sh" % script)
 
 @task
 @hosts('pm_client@10.139.41.18')
@@ -88,7 +80,7 @@ def deploy():
 
 	    # 4. Schedule cron jobs
 	    local("echo 'Scheduling cron jobs...'")
-	    schedule(scripts)
+	    schedule(script_cron_map)
 	finally:
 	    local("echo 'Cleaning up litter...'")
 	    local("rm -rf fabrice*")
