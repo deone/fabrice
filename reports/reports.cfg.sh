@@ -23,3 +23,5 @@ fi
 # email
 recipients="osikoya.oladayo@tecnotree.com"
 cc="alwaysdeone@gmail.com"
+
+all_reports="jkbam@mtn.com.gh"

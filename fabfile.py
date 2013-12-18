@@ -7,11 +7,13 @@ env.roledefs = {
 }
 env.shell = '/bin/bash -c'
 
-test_recipients="osikoya.oladayo@tecnotree.com"
-test_cc="alwaysdeone@gmail.com"
-
-live_recipients="rjmalm@mtn.com.gh;dtenartey@mtn.com.gh;soakoto@mtn.com.gh;msali@mtn.com.gh;titani@mtn.com.gh;jkbam@mtn.com.gh;abfaisal@mtn.com.gh;dannan@mtn.com.gh;sannan@mtn.com.gh;doseiboateng@mtn.com.gh"
-live_cc="jegadeesan.velusamy@tecnotree.com;osikoya.oladayo@tecnotree.com;adetimilehin.hammed@tecnotree.com;Chandra.Mohan@tecnotree.com"
+scripts = [
+    'data_offer_rental.sh',
+    'invoice.sh',
+    'offer_rental.sh',
+    'package_rental.sh',
+    'toll_free_invoice.sh'
+]
 
 def archive():
     # 1. Archive app.
@@ -41,7 +43,8 @@ def schedule(job_list):
 	'data_offer_rental': '00 12 02 * *',
 	'offer_rental': '00 12 02 * *',
 	'package_rental': '00 12 02 * *',
-	'invoice': '00 12 07 * *'
+	'invoice': '00 12 07 * *',
+	'toll_free_invoice': '05 03 05 * *'
     }
 
     # Append script's cron job to the crontab backup
@@ -55,29 +58,15 @@ def schedule(job_list):
     # Delete backup
     run("rm tmpcrontab")
 
-def test(scripts):
+@task
+def test():
     # Test-run scripts
     for script in scripts:
-	run("sh fabrice/reports/%s" % script)
+	local("sh reports/%s" % script)
 
-    # Remove test recipients and cc from config
-    run("grep -v '%s' fabrice/reports/reports.cfg.sh | grep -v '%s' >> reports.cfg.sh.backup" % (test_recipients, test_cc))
-    run("cp reports.cfg.sh.backup fabrice/reports/reports.cfg.sh")
-    run("rm reports.cfg.sh.backup")
-
-    # Write live recipients and cc to config
-    run("echo 'recipients=\"%s\"' >> fabrice/reports/reports.cfg.sh" % live_recipients)
-    run("echo 'cc=\"%s\"' >> fabrice/reports/reports.cfg.sh" % live_cc)
-
+@task
 @hosts('pm_client@10.139.41.18')
 def deploy():
-    scripts = [
-	'data_offer_rental.sh',
-	'invoice.sh',
-	'offer_rental.sh',
-	'package_rental.sh'
-    ]
-
     with hide('running'):
 	# 1. Archive
 	local("echo 'Packaging...'")
@@ -93,17 +82,14 @@ def deploy():
 	    run("unzip fabrice.zip")
 	    run("rm fabrice.zip")
 
-	    # 4. Test scripts.
-	    local("echo 'Testing scripts...'")
-	    test(scripts)
-
-	    # 5. Schedule cron jobs
+	    # 4. Schedule cron jobs
 	    local("echo 'Scheduling cron jobs...'")
 	    schedule(scripts)
 	finally:
 	    local("echo 'Cleaning up litter...'")
 	    local("rm -rf fabrice*")
 
+@task
 @roles('concierge', 'lnp', 'middleware')
 def checkspace():
     with hide('running'):
