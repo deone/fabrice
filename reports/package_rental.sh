@@ -51,5 +51,10 @@ Thanks,
 Tecnotree MSO Team.
 EOF
 
+if [ "$FABRICE_DEBUG" == "false" ]; then
+    recipients="$allreports;rjmalm@mtn.com.gh;dtenartey@mtn.com.gh;soakoto@mtn.com.gh;msali@mtn.com.gh;titani@mtn.com.gh;abfaisal@mtn.com.gh;dannan@mtn    .com.gh;sannan@mtn.com.gh;doseiboateng@mtn.com.gh"
+    cc=$live_cc
+fi
+
 # Send email
 mutt -s "Package Rental Report For $month_name $year" -c $cc -a $sql_results -- $recipients < $email

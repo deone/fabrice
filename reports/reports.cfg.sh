@@ -25,3 +25,4 @@ recipients="osikoya.oladayo@tecnotree.com"
 cc="alwaysdeone@gmail.com"
 
 all_reports="jkbam@mtn.com.gh"
+live_cc="jegadeesan.velusamy@tecnotree.com;osikoya.oladayo@tecnotree.com;adetimilehin.hammed@tecnotree.com;Chandra.Mohan@tecnotree.com"
