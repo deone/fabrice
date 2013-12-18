@@ -12,7 +12,8 @@ scripts = [
     'invoice.sh',
     'offer_rental.sh',
     'package_rental.sh',
-    'toll_free_invoice.sh'
+    'toll_free_invoice.sh',
+    'toll_free_calls.sh'
 ]
 
 def archive():
@@ -45,6 +46,7 @@ def schedule(job_list):
 	'package_rental': '00 12 02 * *',
 	'invoice': '00 12 07 * *',
 	'toll_free_invoice': '05 03 05 * *'
+	'toll_free_calls': '05 03 05 * *'
     }
 
     # Append script's cron job to the crontab backup
@@ -61,8 +63,10 @@ def schedule(job_list):
 @task
 def test():
     # Test-run scripts
-    for script in scripts:
-	local("sh reports/%s" % script)
+    with hide('running'):
+	local("echo 'Testing scripts locally...'")
+	for script in scripts:
+	    local("sh reports/%s" % script)
 
 @task
 @hosts('pm_client@10.139.41.18')
