@@ -4,11 +4,11 @@
 conn_string="abillity_view/abillity_view@TTPROD"
 
 # files
-fabrice_out_path="${FABRICE_PATH}reports/out/"
+reports_out_path="${FABRICE_PATH}reports/out/"
 
-emails_dir="${fabrice_out_path}emails"
-results_dir="${fabrice_out_path}results"
-files_dir="${fabrice_out_path}files"
+emails_dir="${reports_out_path}emails"
+results_dir="${reports_out_path}results"
+files_dir="${reports_out_path}files"
 
 # date
 year=`date +%Y`
