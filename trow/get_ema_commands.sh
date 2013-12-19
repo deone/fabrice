@@ -35,11 +35,11 @@ EOF
 
 # Create CSV file 
 cat $numbers | awk -v a="'" -v b="'," '{ print a $1 b }' > $csv
+    
+sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/truncate.sql
 
 while read line
 do
     value="${line:0:${#line}-1}"
     sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/mul.sql $value
 done < $csv
-
-# sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/mul.sql
