@@ -1,3 +1,5 @@
+set feedback off
+
 declare
     l_mobile_number_v varchar2(10);
     l_account_link_code_n number(10);

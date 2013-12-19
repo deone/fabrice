@@ -43,3 +43,5 @@ do
     value="${line:0:${#line}-1}"
     sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/mul.sql $value
 done < $csv
+
+sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/select.sql > $commands
