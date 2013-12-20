@@ -19,22 +19,22 @@ elif [ "$OSTYPE" == "linux-gnu" ]; then
 fi
 
 # Load config
-. ${FABRICE_PATH}trow/trow.cfg.sh
+. ${FABRICE_PATH}mul/mul.cfg.sh
 
 # Fetch data
-sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/numbers.sql > $numbers
+sqlplus -S $conn_string @${FABRICE_PATH}mul/sql/numbers.sql > $numbers
 
 # Create CSV file 
 cat $numbers | awk -v a="'" -v b="'," '{ print a $1 b }' > $csv
     
-sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/truncate.sql
+sqlplus -S $conn_string @${FABRICE_PATH}mul/sql/truncate.sql
 
 while read line
 do
     value="${line:0:${#line}-1}"
-    sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/mul.sql $value
+    sqlplus -S $conn_string @${FABRICE_PATH}mul/sql/mul.sql $value
 done < $csv
 
 echo "commit;" | sqlplus -S $conn_string
 
-sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/commands.sql > $commands
+sqlplus -S $conn_string @${FABRICE_PATH}mul/sql/commands.sql > $commands

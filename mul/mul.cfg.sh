@@ -4,7 +4,7 @@
 conn_string="tt_mso/ttmso1@TTPROD"
 
 # Files
-trow_out_path="${FABRICE_PATH}/trow/out/"
-numbers="${trow_out_path}numbers.out"
-csv="${trow_out_path}numbers.csv"
-commands="${trow_out_path}commands.out"
+mul_out_path="${FABRICE_PATH}mul/out/"
+numbers="${mul_out_path}numbers.out"
+csv="${mul_out_path}numbers.csv"
+commands="${mul_out_path}commands.out"
