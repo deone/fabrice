@@ -22,7 +22,7 @@ fi
 . ${FABRICE_PATH}trow/trow.cfg.sh
 
 # Fetch data
-sqlplus -s $conn_string @${FABRICE_PATH}trow/sql/numbers.sql
+sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/numbers.sql > $numbers
 
 # Create CSV file 
 cat $numbers | awk -v a="'" -v b="'," '{ print a $1 b }' > $csv
@@ -35,4 +35,6 @@ do
     sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/mul.sql $value
 done < $csv
 
-sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/select.sql > $commands
+echo "commit;" | sqlplus -S $conn_string
+
+sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/commands.sql > $commands

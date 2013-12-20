@@ -56,7 +56,7 @@ begin
 	l_cs5_cr_limit_n||':SHAREACCOUNT,SET,UTID,1,UTMVALUENEW,'||l_cs5_cr_limit_n||';'
     );
 
-    commit;
+    /* commit; */
 
 end;
 /

@@ -19,3 +19,5 @@ do
     value="${line:0:${#line}-1}"
     sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/update.sql $value
 done < $csv
+
+echo "commit;" | sqlplus -S $conn_string
