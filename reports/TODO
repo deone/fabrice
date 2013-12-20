@@ -4,3 +4,5 @@ Here's where we want to get:
 - Set the cron schedule in another file.
 - Test.
 - Deploy!
+
+Move all current SQLs into separate files in the sql directory.
