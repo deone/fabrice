@@ -88,10 +88,12 @@ def main(cmd_file, deduct_counter=False):
     for line in open_file:
 	msisdn, old_mul = get_msisdn_old_mul(line)
 	
+	usage_details = get_usage_details(msisdn)
+
 	if deduct_counter:
-	    usage_counter = 0
+	    usage_counter = usage_details['counter']
 	else:
-	    usage_counter = get_usage_counter(msisdn)
+	    usage_counter = 0
 
 	new_mul = compute_new_mul(old_mul, usage_counter)
 
@@ -100,7 +102,7 @@ def main(cmd_file, deduct_counter=False):
 	request, request_command = build_request(mul_command)
 	response = send_request(request)
 
-	debug_info = (request_command, response)
+	debug_info = (usage_details['threshold'], usage_details['counter'], request_command, response)
 
 	write_log(str(debug_info) + "\n")
 
@@ -117,7 +119,7 @@ def compute_new_mul(old_mul, usage_counter):
 	new_mul = 0
     return str(new_mul)
 
-def get_usage_counter(msisdn):
+def get_usage_details(msisdn):
     command = build_uc_command(msisdn)
 
     request, command = build_request(command)
@@ -125,7 +127,12 @@ def get_usage_counter(msisdn):
 
     soup = BeautifulSoup(response)
 
-    return soup.usagecountermonetaryvalue.string
+    result = {
+	'counter': soup.usagecountermonetaryvalue.string,
+	'threshold': soup.usagethresholdmonetaryvalue.string
+    }
+
+    return result
 
 def write_log(info):
     with open(log_file, 'a') as log:
@@ -136,7 +143,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
 	main(commands)
     else:
-	if sys.argv[1] == '--no-deduct':
+	if sys.argv[1] == '--deduct':
 	    main(commands, deduct_counter=True)
 	else:
-	    print('Unrecognized option. Please use --no-deduct')
+	    print('Unrecognized option. Please use --deduct')
