@@ -112,8 +112,10 @@ def get_msisdn_old_mul(command):
 
 def compute_new_mul(old_mul, usage_counter):
     getcontext().prec = 4
-    new_mul = str(Decimal(old_mul) - Decimal(usage_counter))
-    return new_mul
+    new_mul = Decimal(old_mul) - Decimal(usage_counter)
+    if new_mul < 0:
+	new_mul = 0
+    return str(new_mul)
 
 def get_usage_counter(msisdn):
     command = build_uc_command(msisdn)

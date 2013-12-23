@@ -6,3 +6,4 @@ Here's where we want to get:
 - Deploy!
 
 Move all current SQLs into separate files in the sql directory.
+Change all [..] constructs to [[..]].
