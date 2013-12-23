@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python
 """
 1. Read line from commands.out.
 2. Grab msisdn and old mul from line.
@@ -12,15 +12,20 @@
 10. Log request and response string.
 """
 
-import os, urllib2, sys
+import os, urllib2, sys, platform
 from decimal import *
 from bs4 import BeautifulSoup
 
+# Change fabrice_mul_path on live.
 url = "http://10.139.41.58:6004/EMA/EMA_PROXY"
 
-# Create settings.py for these and extend for live environment django style. But how do we load settings_live.py?
-commands = "/Users/deone/.virtualenvs/fabrice/fabrice/mul/out/commands.out"
-log_file = "/Users/deone/.virtualenvs/fabrice/fabrice/mul/log/mul.log"
+if platform.system() == "Darwin":
+    fabrice_mul_path = "/Users/deone/.virtualenvs/fabrice/fabrice/mul/"
+elif platform.system() == "Linux":
+    fabrice_mul_path = "/home/pm_client/fabrice/mul/"
+    
+commands = "%sout/commands.out" % fabrice_mul_path
+log_file = "%slog/mul.log" % fabrice_mul_path
 
 def build_uc_command(msisdn):
     return "GET:ACCOUNTINFORMATION:2:SubscriberNumber,%s;" % msisdn

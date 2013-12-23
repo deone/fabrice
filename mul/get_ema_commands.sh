@@ -21,8 +21,14 @@ fi
 # Load config
 . ${FABRICE_PATH}mul/mul.cfg.sh
 
-# Fetch data
-sqlplus -S $conn_string @${FABRICE_PATH}mul/sql/numbers.sql > $numbers
+# Fetch numbers from either file or DB as source.
+if [[ -n "$@" ]]; then
+    if [ "$@" == "--source=db" ]; then
+	sqlplus -S $conn_string @${FABRICE_PATH}mul/sql/numbers.sql > $numbers
+    else
+	echo "Invalid option. Please use --source=db"
+    fi
+fi
 
 # Create CSV file 
 cat $numbers | awk -v a="'" -v b="'," '{ print a $1 b }' > $csv
