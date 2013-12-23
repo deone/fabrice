@@ -12,12 +12,12 @@ elif [ "$OSTYPE" == "linux-gnu" ]; then
 fi
 
 # Load config
-. ${FABRICE_PATH}trow/trow.cfg.sh
+. ${FABRICE_PATH}mul/mul.cfg.sh
 
 while read line
 do
     value="${line:0:${#line}-1}"
-    sqlplus -S $conn_string @${FABRICE_PATH}trow/sql/update.sql $value
+    sqlplus -S $conn_string @${FABRICE_PATH}mul/sql/update.sql $value
 done < $csv
 
 echo "commit;" | sqlplus -S $conn_string
