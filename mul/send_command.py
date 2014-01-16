@@ -14,18 +14,21 @@
 
 import os, urllib2, sys, platform
 from decimal import *
+from traceback import print_exc
 from bs4 import BeautifulSoup
 
-# Change fabrice_mul_path on live.
 url = "http://10.139.41.58:6004/EMA/EMA_PROXY"
 
 if platform.system() == "Darwin":
     fabrice_mul_path = "/Users/deone/.virtualenvs/fabrice/fabrice/mul/"
 elif platform.system() == "Linux":
     fabrice_mul_path = "/home/pm_client/fabrice/mul/"
+elif platform.system() == "Windows":
+    fabrice_mul_path = "C:/fabrice/mul/"
     
 commands = "%sout/commands.out" % fabrice_mul_path
-log_file = "%slog/mul.log" % fabrice_mul_path
+log_file = "%slogs/mul.log" % fabrice_mul_path
+todo = "%sTODO" % fabrice_mul_path
 
 def build_uc_command(msisdn):
     return "GET:ACCOUNTINFORMATION:2:SubscriberNumber,%s;" % msisdn
@@ -77,34 +80,36 @@ def build_request(command):
     </soapenv:Envelope>
     """ % command
     request = urllib2.Request(url, xml)
-    return request, command
+    return request
 
 def send_request(request):
     response = urllib2.urlopen(request)
     return BeautifulSoup(response).resultmessage.string
-
+  
 def main(cmd_file, deduct_counter=False):
     open_file = open(cmd_file, 'r')
     for line in open_file:
-	msisdn, old_mul = get_msisdn_old_mul(line)
-	
-	usage_details = get_usage_details(msisdn)
+	try:
+	    if deduct_counter:
+		msisdn, old_mul = get_msisdn_old_mul(line)
+		usage_details = get_usage_details(msisdn)
+		usage_counter = usage_details['counter']
+		new_mul = compute_new_mul(old_mul, usage_counter)
+		mul_command = build_mul_command(line, new_mul)
+	    else:
+		mul_command = line[:-1]
 
-	if deduct_counter:
-	    usage_counter = usage_details['counter']
-	else:
-	    usage_counter = 0
+	    request = build_request(mul_command)
+	    response = send_request(request)
+	    debug_info = (mul_command, response)
 
-	new_mul = compute_new_mul(old_mul, usage_counter)
-
-	mul_command = build_mul_command(line, new_mul)
-
-	request, request_command = build_request(mul_command)
-	response = send_request(request)
-
-	debug_info = (usage_details['threshold'], usage_details['counter'], request_command, response)
-
-	write_log(str(debug_info) + "\n")
+	    write_log(str(debug_info) + "\n")
+	except:
+	    print_exc()
+	    with open(todo, 'a') as td:
+		td.write(line)
+	    td.closed
+	    continue
 
 def get_msisdn_old_mul(command):
     parts = command.split(',')
@@ -122,7 +127,7 @@ def compute_new_mul(old_mul, usage_counter):
 def get_usage_details(msisdn):
     command = build_uc_command(msisdn)
 
-    request, command = build_request(command)
+    request = build_request(command)
     response = send_request(request)
 
     soup = BeautifulSoup(response)
