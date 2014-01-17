@@ -12,12 +12,21 @@ files_dir="${reports_out_path}files"
 
 # date
 year=`date +%Y`
+
 if [ "$FABRICE_DEBUG" == "true" ]; then
     month_number=`date -v -1m +%m`
     month_name=`date -v -1m +%B`
+
+    if [ "$month_number" == "12" ]; then
+	year=`date -v -1y +%Y`
+    fi
 else
     month_number=`date +%m -d last-month`
     month_name=`date +%B -d last-month`
+
+    if [ "$month_number" == "12" ]; then
+	year=`date +%Y -d last-year`
+    fi
 fi
 
 # email
