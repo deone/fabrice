@@ -5,6 +5,7 @@ conn_string="abillity_view/abillity_view@TTPROD"
 
 # files
 reports_out_path="${FABRICE_PATH}reports/out/"
+reports_sql_path="${FABRICE_PATH}reports/sql/"
 
 emails_dir="${reports_out_path}emails"
 results_dir="${reports_out_path}results"

@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Grab report name from SQL filename.
+report_name=`echo $@ | rev | cut -d '/' -f 1  | rev | cut -d '.' -f 1`
+report_verbose_name=`echo $report_name | tr '_' ' '`
+report_capital_name=`echo $report_verbose_name | awk '{ print toupper($0) }'`
+
 # Set/Fetch env. vars on both dev and live
 # Dev
 if [ "$OSTYPE" == "darwin13" ]; then
@@ -17,51 +22,22 @@ fi
 . ${FABRICE_PATH}reports/reports.cfg.sh
 
 # Output files
-sql_results=$results_dir/data_offer_rental_${month_name}_${year}.csv
-email=$emails_dir/data_offer_rental.mail
-
-echo "Offer Code, Offer Description, Rental Amount" > $sql_results
+sql_results=$results_dir/${report_name}_${month_name}_${year}.csv
+email=$emails_dir/template.mail
 
 # Fetch data
-sqlplus -s $conn_string >> $sql_results << EOF
-set linesize 1000
-set colsep ,
-set pagesize 0
+bill_cycle_code=101000001${year}${month_number}0
+sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $bill_cycle_code > $sql_results
 
-SELECT A.OFFER_CODE_V, A.OFFER_DESC_V, SUM(B.TRANS_AMT_N)/100 RENTAL_AMOUNT 
-FROM CB_OFFERS A, CB_INVOICE_DETAILS B 
-WHERE BILL_CYCLE_FULL_CODE_N =101000001${year}${month_number}0 
-AND A.SCHEME_REF_CODE_N=B.SCHEME_REF_CODE_N 
-AND DB_CR_V='C' 
-AND (B.SCHEME_REF_CODE_N,ARTICLE_CODE_V) IN
-(SELECT SCHEME_REF_CODE_N,ARTICLE_CODE_V FROM CB_SUBSCRIPTION_ARTICLES  WHERE SCHEME_REF_CODE_N IN (
-SELECT SCHEME_REF_CODE_N FROM CB_OFFERS WHERE (OFFER_DESC_V LIKE '%DATA%' OR OFFER_DESC_V LIKE '%BB%' 
-AND CONTRACT_TYPE_N ='N')))
-GROUP BY A.OFFER_CODE_V, A.OFFER_DESC_V, DB_CR_V;
-
-EXIT;
-EOF
-
-sqlplus -s $conn_string >> $sql_results << EOF
-
-SELECT  COUNT(DISTINCT (SERV_ACC_LINK_CODE_N)) 
-FROM CB_OFFERS A, CB_INVOICE_DETAILS B 
-WHERE BILL_CYCLE_FULL_CODE_N =101000001${year}${month_number}0
-AND A.SCHEME_REF_CODE_N=B.SCHEME_REF_CODE_N 
-AND TRANS_AMT_N > 0 
-AND DB_CR_V='C' 
-AND (B.SCHEME_REF_CODE_N,ARTICLE_CODE_V) IN
-(SELECT SCHEME_REF_CODE_N,ARTICLE_CODE_V FROM CB_SUBSCRIPTION_ARTICLES  WHERE SCHEME_REF_CODE_N IN (
-SELECT SCHEME_REF_CODE_N FROM CB_OFFERS WHERE (OFFER_DESC_V LIKE '%DATA%' OR OFFER_DESC_V LIKE '%BB%') AND CONTRACT_TYPE_N ='N'));
-
-EXIT;
-EOF
+if [ "$report_name" == "data_offer_rental" ]; then
+    sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $bill_cycle_code >> $sql_results
+fi
 
 # Compose email
 cat << EOF > $email
 Hello,
 
-Please find attached the data offer rental report for $month_name $year.
+Please find attached the $report_verbose_name report for $month_name $year.
 
 Thanks,
 Tecnotree MSO Team.
@@ -73,4 +49,4 @@ if [ "$FABRICE_DEBUG" == "false" ]; then
 fi
 
 # Send email
-mutt -s "Data Offer Rental Report For $month_name $year" -c $cc -a $sql_results -- $recipients < $email
+mutt -s "${report_capital_name} Report For $month_name $year" -c $cc -a $sql_results -- $recipients < $email
