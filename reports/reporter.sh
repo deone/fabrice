@@ -26,8 +26,8 @@ sql_results=$results_dir/${report_name}_${month_name}_${year}.csv
 email=$emails_dir/template.mail
 
 # Fetch data
-bill_cycle_code=101000001${year}${month_number}0
-sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $bill_cycle_code > $sql_results
+value=101000001${year}${month_number}0
+sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
 
 if [ "$report_name" == "data_offer_rental" ]; then
     sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $bill_cycle_code >> $sql_results
