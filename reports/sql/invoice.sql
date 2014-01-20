@@ -1,0 +1,16 @@
+set linesize 1000
+set colsep ,
+set pagesize 0
+set verify off
+
+prompt Account Code, Account Name, Invoice Amt Inc. Tax, Subscriber Category, Subscriber Sub Category
+
+SELECT ACCOUNT_CODE_N, ACCOUNT_NAME_V, 
+INVOICE_AMT_N/100+INVOICE_TAX_N/100, B.SUBSCRIBER_CATEGORY_V, 
+B.SUBSCRIBER_SUB_CATEGORY_V 
+FROM CB_INVOICE A, CB_ACCOUNT_MASTER B 
+WHERE A.ACCOUNT_LINK_CODE_N=B.ACCOUNT_LINK_CODE_N 
+AND SUBSCRIBER_CATEGORY_V='CORP' 
+AND BILL_CYCL_FULL_CODE_N=&1;
+
+EXIT;
