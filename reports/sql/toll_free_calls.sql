@@ -1,7 +1,4 @@
-set linesize 1000
-set colsep ,
-set pagesize 0
-set verify off
+@@commands.sql
 
 prompt Called Number, Calling Number, Date, Duration, Charge
 

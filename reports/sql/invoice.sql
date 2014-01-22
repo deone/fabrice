@@ -1,7 +1,4 @@
-set linesize 1000
-set colsep ,
-set pagesize 0
-set verify off
+@@commands.sql
 
 prompt Account Code, Account Name, Invoice Amt Inc. Tax, Subscriber Category, Subscriber Sub Category
 
