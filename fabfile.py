@@ -59,10 +59,9 @@ def schedule(job_list):
 @task
 def test():
     # Test-run scripts
-    with hide('running'):
-	local("echo 'Testing scripts locally...'")
-	for script in script_cron_map.iterkeys():
-	    local("sh reports/%s.sh" % script)
+    local("echo 'Testing scripts locally...'")
+    for script in script_cron_map.iterkeys():
+	local("sh reports/reporter.sh %s.sh" % script)
 
 @task
 @hosts('pm_client@10.139.41.18')

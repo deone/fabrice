@@ -34,10 +34,9 @@ fi
 if [[ "$report_name" != "sms_queue" ]]; then
     value=101000001${year}${month_number}0
     sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
-fi
-
-if [[ "$report_name" == "data_offer_rental" ]]; then
-    sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $bill_cycle_code >> $sql_results
+    if [[ "$report_name" == "data_offer_rental" ]]; then
+	sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $value >> $sql_results
+    fi
 fi
 
 if [[ "$report_name" == "sms_queue" ]]; then
