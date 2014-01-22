@@ -21,16 +21,19 @@ script_cron_map = {
 
 def archive():
     # 1. Archive app.
-    local("mkdir -p fabrice/reports")
-    local("cp reports/*.sh fabrice/reports/")
+    local("mkdir -p reports/build/fabrice/reports")
+    local("cp reports/reporter.sh reports/reports.cfg.sh reports/build/fabrice/reports/")
 
-    with lcd("fabrice/reports"):
-	local("mkdir out logs")
+    with lcd("reports/build/fabrice/reports"):
+	local("mkdir out logs sql")
 
-    with lcd("fabrice/reports/out"):
+    local("cp reports/sql/*.sql reports/build/fabrice/reports/sql/")
+
+    with lcd("reports/build/fabrice/reports/out"):
 	local("mkdir emails files results")
 
-    local("zip -r fabrice fabrice")
+    with lcd("reports/build/"):
+	local("zip -r fabrice fabrice")
 
 def build_grep_string(job_list):
     grep_string = " | grep -v "
@@ -44,7 +47,7 @@ def schedule(job_list):
 
     # Append script's cron job to the crontab backup
     for key, value in script_cron_map.iteritems():
-	run("echo '%s sh fabrice/reports/%s.sh >> fabrice/reports/logs/%s.log 2>&1' >> tmpcrontab" % (value, key, key))
+	run("echo '%s sh fabrice/reports/reporter.sh %s.sh >> fabrice/reports/logs/%s.log 2>&1' >> tmpcrontab" % (value, key, key))
 
     # Replace current crontab with backup
     run("crontab -r")
@@ -71,7 +74,7 @@ def deploy():
 	try:
 	    # 2. Copy archive over to host.
 	    local("echo 'Copying script archive to host...'")
-	    put("fabrice.zip", "fabrice.zip")
+	    put("reports/build/fabrice.zip", "fabrice.zip")
 
 	    # 3. Unzip archive/Deploy app.
 	    local("echo 'Deploying scripts...'")
@@ -84,7 +87,7 @@ def deploy():
 	    schedule(script_cron_map)
 	finally:
 	    local("echo 'Cleaning up litter...'")
-	    local("rm -rf fabrice*")
+	    local("rm -rf reports/build/fabrice*")
 
 @task
 @roles('concierge', 'lnp', 'abillity', 'middleware')
