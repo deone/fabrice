@@ -1,10 +1,6 @@
 Here's where we want to get:
-- Write SQL and pop it in SQL directory.
-- Write reports header csv in its own directory.
 - Set the cron schedule in another file.
 - Test.
 - Deploy!
 
-Move all current SQLs into separate files in sql directory.
 Make build process happen in build directory.
-Change all [..] constructs to [[..]].
