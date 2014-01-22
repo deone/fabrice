@@ -26,16 +26,24 @@ if [[ "$report_name" == "sms_queue" ]]; then
     sql_results=$results_dir/${report_name}.out
     email=$emails_dir/${report_name}.mail
 else
-    sql_results=$results_dir/${report_name}_${month_name}_${year}.csv
+    if [[ "$report_name" == "concierge_performance" ]]; then
+	sql_results=$results_dir/${report_name}.csv
+    else
+	sql_results=$results_dir/${report_name}_${text_date}.csv
+    fi
     email=$emails_dir/template.mail
 fi
 
 # Fetch data
 if [[ "$report_name" != "sms_queue" ]]; then
-    value=101000001${year}${month_number}0
-    sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
-    if [[ "$report_name" == "data_offer_rental" ]]; then
-	sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $value >> $sql_results
+    if [[ "$report_name" == "concierge_performance" ]]; then
+	sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql > $sql_results
+    else
+	value=101000001${query_date}0
+	sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
+	if [[ "$report_name" == "data_offer_rental" ]]; then
+	    sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $value >> $sql_results
+	fi
     fi
 fi
 
@@ -49,7 +57,7 @@ if [[ "$report_name" != "sms_queue" ]]; then
     cat << EOF > $email
     Hello,
 
-    Please find attached the $report_verbose_name report for $month_name $year.
+    Please find attached the $report_verbose_name report for $text_date.
 
     Thanks,
     Tecnotree MSO Team.
@@ -71,5 +79,9 @@ if [[ "$report_name" == "sms_queue" ]]; then
 	mutt -s "${report_capital_name} for `date`" -c $cc $recipients < $email
     fi
 else
-    mutt -s "${report_capital_name} Report For $month_name $year" -c $cc -a $sql_results -- $recipients < $email
+    if [[ "$report_name" == "concierge_performance" ]]; then
+	mutt -s "${report_capital_name} Report" -c $cc -a $sql_results -- $recipients < $email
+    else
+	mutt -s "${report_capital_name} Report For $text_date" -c $cc -a $sql_results -- $recipients < $email
+    fi
 fi

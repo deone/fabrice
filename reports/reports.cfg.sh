@@ -1,7 +1,11 @@
 #!/bin/sh
 
 # DB
-conn_string="abillity_view/abillity_view@TTPROD"
+if [[ "$report_name" == "concierge_performance" ]]; then
+    conn_string="concierge_app_gha/concierge_app_gha@TTPROD"
+else
+    conn_string="abillity_view/abillity_view@TTPROD"
+fi
 
 # files
 reports_out_path="${FABRICE_PATH}reports/out/"
@@ -15,19 +19,11 @@ files_dir="${reports_out_path}files"
 year=`date +%Y`
 
 if [ "$FABRICE_DEBUG" == "true" ]; then
-    month_number=`date -v -1m +%m`
-    month_name=`date -v -1m +%B`
-
-    if [ "$month_number" == "12" ]; then
-	year=`date -v -1y +%Y`
-    fi
+    query_date=`date -v -1m +"%Y%m"`
+    text_date=`date -v -1m +"%B %Y"`
 else
-    month_number=`date +%m -d last-month`
-    month_name=`date +%B -d last-month`
-
-    if [ "$month_number" == "12" ]; then
-	year=`date +%Y -d last-year`
-    fi
+    query_date=`date +"%Y%m" -d last-month`
+    text_date=`date +"%B %Y" -d last-month`
 fi
 
 # email

@@ -1,6 +1,2 @@
-Here's where we want to get:
-- Set the cron schedule in another file.
-- Test.
-- Deploy!
-
-Make build process happen in build directory.
+- Set cron schedule in separate file.
+- Add yesterday's date to concierge performance report header and schedule it to run at 4am everyday.
