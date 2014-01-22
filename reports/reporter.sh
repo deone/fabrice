@@ -18,7 +18,7 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     . ~/.bash_profile
 fi
 
-# Load config
+# Source config file
 . ${FABRICE_PATH}reports/reports.cfg.sh
 
 # Output files
