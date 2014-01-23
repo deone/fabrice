@@ -87,6 +87,7 @@ def deploy():
 	finally:
 	    local("echo 'Cleaning up litter...'")
 	    local("rm -rf reports/build/fabrice*")
+	    local("rm -rf reports/build")
 
 @task
 @roles('concierge', 'lnp', 'abillity', 'middleware')

@@ -16,14 +16,20 @@ results_dir="${reports_out_path}results"
 files_dir="${reports_out_path}files"
 
 # date
-year=`date +%Y`
-
 if [ "$FABRICE_DEBUG" == "true" ]; then
     query_date=`date -v -1m +"%Y%m"`
-    text_date=`date -v -1m +"%B %Y"`
+    if [[ "$report_name" == "concierge_performance" ]]; then
+	text_date=`date -v -1d +"%d %B %Y"`
+    else
+	text_date=`date -v -1m +"%B %Y"`
+    fi
 else
     query_date=`date +"%Y%m" -d last-month`
-    text_date=`date +"%B %Y" -d last-month`
+    if [[ "$report_name" == "concierge_performance" ]]; then
+	text_date=`date +"%d %B %Y" -d yesterday`
+    else
+	text_date=`date +"%B %Y" -d last-month`
+    fi
 fi
 
 # email

@@ -80,7 +80,7 @@ if [[ "$report_name" == "sms_queue" ]]; then
     fi
 else
     if [[ "$report_name" == "concierge_performance" ]]; then
-	mutt -s "${report_capital_name} Report" -c $cc -a $sql_results -- $recipients < $email
+	mutt -s "${report_capital_name} Report For $text_date" -c $cc -a $sql_results -- $recipients < $email
     else
 	mutt -s "${report_capital_name} Report For $text_date" -c $cc -a $sql_results -- $recipients < $email
     fi
