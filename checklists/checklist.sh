@@ -10,10 +10,10 @@ conn_string="abillity_view/abillity_view@TTPROD"
 date_string=`date +'%d%m%Y'`
 
 # Source SQL file
-. ${FABRICE_PATH}reports/sql/checklist/count.sql.sh
+. ${FABRICE_PATH}checklists/sql/checklist/count.sql.sh
 
-out_file=${FABRICE_PATH}reports/out/results/values.out
-sql_results=${FABRICE_PATH}reports/out/results/checklist_${date_string}.txt
+out_file=${FABRICE_PATH}checklists/out/results/values.out
+sql_results=${FABRICE_PATH}checklists/out/checklist_${date_string}.txt
 
 results=`echo $no9 | sqlplus -S $conn_string`
 echo "9." $results > $out_file
