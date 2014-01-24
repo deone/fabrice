@@ -10,6 +10,7 @@ env.shell = '/bin/bash -c'
 
 # Map script to schedule time
 script_cron_map = {
+    'concierge_performance': '00 04 * * *',
     'data_offer_rental': '00 12 02 * *',
     'offer_rental': '00 12 02 * *',
     'package_rental': '00 12 02 * *',

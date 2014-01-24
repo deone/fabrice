@@ -1,3 +1,1 @@
-- Set cron schedule in separate file.
-- Add yesterday's date to concierge performance report header and schedule it to run at 4am everyday.
-- Work on Jega's PORT IN report email.
+- We might have to re-write reporter.sh in python if it gets more complex.

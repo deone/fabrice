@@ -71,6 +71,10 @@ if [[ "$FABRICE_DEBUG" == "false" ]]; then
 	recipients=$live_cc
 	cc="ganesh.giri@tecnotree.com"
     fi
+    if [[ "$report_name" == "concierge_performance" ]]; then
+	recipients="balamurugan.palaniswamy@tecnotree.com;umesh.nanjundaiah@tecnotree.com"
+	cc=$live_cc
+    fi
 fi
 
 # Send email
