@@ -5,15 +5,13 @@
 export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice/"
 
 # Config
-conn_string="abillity_view/abillity_view@TTPROD"
-
-date_string=`date +'%d%m%Y'`
+. ${FABRICE_PATH}checklists/checklists.cfg.sh
 
 # Source SQL file
 . ${FABRICE_PATH}checklists/sql/count.sql.sh
 
 out_file=${FABRICE_PATH}checklists/out/values.out
-sql_results=${FABRICE_PATH}checklists/out/checklist_${date_string}.txt
+sql_results=${FABRICE_PATH}checklists/out/count_${date_string}.txt
 
 results=`echo $no9 | sqlplus -S $conn_string`
 echo "9." $results > $out_file
