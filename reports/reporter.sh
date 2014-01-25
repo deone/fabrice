@@ -71,7 +71,7 @@ if [[ "$FABRICE_DEBUG" == "false" ]]; then
     elif [[ "$report_name" == "concierge_performance" ]]; then
 	recipients="balamurugan.palaniswamy@tecnotree.com;umesh.nanjundaiah@tecnotree.com"
     else
-	recipients="$allreports;rjmalm@mtn.com.gh;dtenartey@mtn.com.gh;soakoto@mtn.com.gh;msali@mtn.com.gh;titani@mtn.com.gh;abfaisal@mtn.com.gh;dannan@mtn.com.gh;sannan@mtn.com.gh;doseiboateng@mtn.com.gh"
+	recipients="$all_reports;rjmalm@mtn.com.gh;dtenartey@mtn.com.gh;soakoto@mtn.com.gh;msali@mtn.com.gh;titani@mtn.com.gh;abfaisal@mtn.com.gh;dannan@mtn.com.gh;sannan@mtn.com.gh;doseiboateng@mtn.com.gh"
     fi
 fi
 
