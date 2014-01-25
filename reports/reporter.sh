@@ -54,26 +54,24 @@ fi
 
 # Compose email
 if [[ "$report_name" != "sms_queue" ]]; then
-    cat << EOF > $email
-    Hello,
+cat << EOF > $email
+Hello,
 
-    Please find attached the $report_verbose_name report for $text_date.
+Please find attached the $report_verbose_name report for $text_date.
 
-    Thanks,
-    Tecnotree MSO Team.
+Thanks,
+Tecnotree MSO Team.
 EOF
 fi
 
 if [[ "$FABRICE_DEBUG" == "false" ]]; then
-    recipients="$allreports;rjmalm@mtn.com.gh;dtenartey@mtn.com.gh;soakoto@mtn.com.gh;msali@mtn.com.gh;titani@mtn.com.gh;abfaisal@mtn.com.gh;dannan@mtn    .com.gh;sannan@mtn.com.gh;doseiboateng@mtn.com.gh"
     cc=$live_cc
     if [[ "$report_name" == "sms_queue" ]]; then
-	recipients=$live_cc
-	cc="ganesh.giri@tecnotree.com"
-    fi
-    if [[ "$report_name" == "concierge_performance" ]]; then
+	recipients="ganesh.giri@tecnotree.com"
+    elif [[ "$report_name" == "concierge_performance" ]]; then
 	recipients="balamurugan.palaniswamy@tecnotree.com;umesh.nanjundaiah@tecnotree.com"
-	cc=$live_cc
+    else
+	recipients="$allreports;rjmalm@mtn.com.gh;dtenartey@mtn.com.gh;soakoto@mtn.com.gh;msali@mtn.com.gh;titani@mtn.com.gh;abfaisal@mtn.com.gh;dannan@mtn.com.gh;sannan@mtn.com.gh;doseiboateng@mtn.com.gh"
     fi
 fi
 
