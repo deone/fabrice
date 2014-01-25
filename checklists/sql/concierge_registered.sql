@@ -1,3 +1,5 @@
+@@commands.sql
+
 SELECT MOBL_NUM_VOICE_V||','||'PAM2'||','||'ADD VAS'||','||',' 
 FROM gsm_service_mast a
 WHERE mobl_num_voice_V IN

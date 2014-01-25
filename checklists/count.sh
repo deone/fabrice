@@ -8,7 +8,7 @@ export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice/"
 . ${FABRICE_PATH}checklists/checklists.cfg.sh
 
 # Source SQL file
-. ${FABRICE_PATH}checklists/sql/count.sql.sh
+. ${sql_dir}count.sql.sh
 
 out_file=${FABRICE_PATH}checklists/out/values.out
 sql_results=${FABRICE_PATH}checklists/out/count_${date_string}.txt
