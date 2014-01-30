@@ -118,8 +118,8 @@ def get_msisdn_old_mul(command):
     return [msisdn, old_mul]
 
 def compute_new_mul(old_mul, usage_counter):
-    getcontext().prec = 4
-    new_mul = Decimal(old_mul) - Decimal(usage_counter)
+    val = Decimal(old_mul) - Decimal(usage_counter)
+    new_mul = val.quantize(Decimal('.01'), rounding=ROUND_UP)
     if new_mul < 0:
 	new_mul = 0
     return str(new_mul)
