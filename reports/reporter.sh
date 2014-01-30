@@ -26,24 +26,17 @@ if [[ "$report_name" == "sms_queue" ]]; then
     sql_results=$results_dir/${report_name}.out
     email=$emails_dir/${report_name}.mail
 else
-    if [[ "$report_name" == "concierge_performance" ]]; then
-	sql_results=$results_dir/${report_name}.csv
-    else
-	sql_results=$results_dir/${report_name}_${text_date}.csv
-    fi
+    sql_results=$results_dir/${report_name}_${_text_date_}.csv
     email=$emails_dir/template.mail
 fi
 
 # Fetch data
 if [[ "$report_name" != "sms_queue" ]]; then
-    if [[ "$report_name" == "concierge_performance" ]]; then
-	sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql > $sql_results
-    else
-	value=101000001${query_date}0
-	sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
-	if [[ "$report_name" == "data_offer_rental" ]]; then
-	    sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $value >> $sql_results
-	fi
+    # We're passing $value to the query. Those that don't need $value will ignore it.
+    value=101000001${query_date}0
+    sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
+    if [[ "$report_name" == "data_offer_rental" ]]; then
+	sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $value >> $sql_results
     fi
 fi
 
@@ -81,9 +74,5 @@ if [[ "$report_name" == "sms_queue" ]]; then
 	mutt -s "${report_capital_name} for `date`" -c $cc $recipients < $email
     fi
 else
-    if [[ "$report_name" == "concierge_performance" ]]; then
-	mutt -s "${report_capital_name} Report For $text_date" -c $cc -a $sql_results -- $recipients < $email
-    else
-	mutt -s "${report_capital_name} Report For $text_date" -c $cc -a $sql_results -- $recipients < $email
-    fi
+    mutt -s "${report_capital_name} Report For $text_date" -c $cc -a $sql_results -- $recipients < $email
 fi
