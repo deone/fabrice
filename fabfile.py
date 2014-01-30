@@ -10,6 +10,8 @@ env.shell = '/bin/bash -c'
 
 # Map script to schedule time
 script_cron_map = {
+    'total_uploaded_files': '55 08 * * *',
+    'provisioning_rejection': '55 08 * * *',
     'concierge_performance': '00 04 * * *',
     'data_offer_rental': '00 12 02 * *',
     'offer_rental': '00 12 02 * *',

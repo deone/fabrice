@@ -26,7 +26,11 @@ if [[ "$report_name" == "sms_queue" ]]; then
     sql_results=$results_dir/${report_name}.out
     email=$emails_dir/${report_name}.mail
 else
-    sql_results=$results_dir/${report_name}_${_text_date_}.csv
+    if [[ "$report_name" == "provisioning_rejection" ]]; then
+	sql_results=$results_dir/${report_name}_${_text_date_}.txt
+    else
+	sql_results=$results_dir/${report_name}_${_text_date_}.csv
+    fi
     email=$emails_dir/template.mail
 fi
 
@@ -37,6 +41,12 @@ if [[ "$report_name" != "sms_queue" ]]; then
     sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
     if [[ "$report_name" == "data_offer_rental" ]]; then
 	sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $value >> $sql_results
+    fi
+
+    if [[ "$report_name" == "provisioning_rejection" ]]; then
+	tmp=$reports_out_path/prov_rej.tmp
+	sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $tmp
+	cat $tmp | grep -v "^$" | grep -v "PL/SQL procedure"  > $sql_results
     fi
 fi
 

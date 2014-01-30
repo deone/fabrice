@@ -18,7 +18,7 @@ files_dir="${reports_out_path}files"
 # date
 if [ "$FABRICE_DEBUG" == "true" ]; then
     query_date=`date -v -1m +"%Y%m"`
-    if [[ "$report_name" == "concierge_performance" || "$report_name" == "total_uploaded_files" ]]; then
+    if [[ "$report_name" == "concierge_performance" || "$report_name" == "total_uploaded_files" || "$report_name" == "provisioning_rejection" ]]; then
 	text_date=`date -v -1d +"%d %B %Y"`
 	_text_date_=`date -v -1d +"%d_%B_%Y"`
     else
@@ -27,7 +27,7 @@ if [ "$FABRICE_DEBUG" == "true" ]; then
     fi
 else
     query_date=`date +"%Y%m" -d last-month`
-    if [[ "$report_name" == "concierge_performance" || "$report_name" == "total_uploaded_files" ]]; then
+    if [[ "$report_name" == "concierge_performance" || "$report_name" == "total_uploaded_files" || "$report_name" == "provisioning_rejection" ]]; then
 	text_date=`date +"%d %B %Y" -d yesterday`
 	_text_date_=`date +"%d_%B_%Y" -d yesterday`
     else
