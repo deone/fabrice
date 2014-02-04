@@ -15,10 +15,13 @@ emails_dir="${reports_out_path}emails"
 results_dir="${reports_out_path}results"
 files_dir="${reports_out_path}files"
 
+periods="${FABRICE_PATH}reports/periods.txt"
+period=`awk -v r=$report_name '{ if ($1 == r) print $2; }' $periods`
+
 # date
 if [ "$FABRICE_DEBUG" == "true" ]; then
     query_date=`date -v -1m +"%Y%m"`
-    if [[ "$report_name" == "concierge_performance" || "$report_name" == "total_uploaded_files" || "$report_name" == "provisioning_rejection" ]]; then
+    if [[ "$period" == "yesterday" ]]; then
 	text_date=`date -v -1d +"%d %B %Y"`
 	_text_date_=`date -v -1d +"%d_%B_%Y"`
     else
@@ -27,7 +30,7 @@ if [ "$FABRICE_DEBUG" == "true" ]; then
     fi
 else
     query_date=`date +"%Y%m" -d last-month`
-    if [[ "$report_name" == "concierge_performance" || "$report_name" == "total_uploaded_files" || "$report_name" == "provisioning_rejection" ]]; then
+    if [[ "$period" == "yesterday" ]]; then
 	text_date=`date +"%d %B %Y" -d yesterday`
 	_text_date_=`date +"%d_%B_%Y" -d yesterday`
     else

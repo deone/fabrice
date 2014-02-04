@@ -1,0 +1,10 @@
+concierge_performance yesterday
+total_uploaded_files yesterday
+provisioning_rejection yesterday
+order_rejections_for_executed_provisioning_commands yesterday
+data_offer_rental last-month
+offer_rental last-month
+package_rental last-month
+invoice last-month
+toll_free_invoice last-month
+toll_free_calls last-month
