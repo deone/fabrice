@@ -8,10 +8,14 @@ export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice/"
 . ${FABRICE_PATH}checklists/checklists.cfg.sh
 
 # Source SQL file
-. ${sql_dir}count.sql.sh
+. ${sql_dir}/count.sql.sh
 
-out_file=${FABRICE_PATH}checklists/out/values.out
-sql_results=${FABRICE_PATH}checklists/out/count_${date_string}.txt
+out_dir="${FABRICE_PATH}checklists/out"
+
+find ${out_dir} -name '*.txt' -mtime +1 -exec rm -f {} \;
+
+out_file="${out_dir}/values.out"
+sql_results="${out_dir}/count_${date_string}.txt"
 
 results=`echo $no9 | sqlplus -S $conn_string`
 echo "9." $results > $out_file
