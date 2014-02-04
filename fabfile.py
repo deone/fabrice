@@ -8,7 +8,7 @@ env.roledefs = {
 }
 env.shell = '/bin/bash -c'
 
-# Map script to schedule time
+# Cron map for report schedule
 script_cron_map = {
     'total_uploaded_files': '55 08 * * *',
     'provisioning_rejection': '55 08 * * *',
@@ -25,7 +25,7 @@ script_cron_map = {
 def archive():
     # 1. Archive app.
     local("mkdir -p reports/build/fabrice/reports")
-    local("cp reports/reporter.sh reports/reports.cfg.sh reports/build/fabrice/reports/")
+    local("cp reports/reporter.sh reports/recipients.txt reports/reports.cfg.sh reports/build/fabrice/reports/")
 
     with lcd("reports/build/fabrice/reports"):
 	local("mkdir out logs sql")
