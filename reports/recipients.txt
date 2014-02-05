@@ -1,8 +1,9 @@
-provisioning_rejection  
-total_uploaded_files  
-order_rejections_for_executed_provisioning_commands  
-failed_sim_registrations  
+total_uploaded_files ganesh.giri@tecnotree.com
+rating_rejection_rectification ganesh.giri@tecnotree.com
+provisioning_rejection Billing&Charging@mtn.com.gh;dtenartey@mtn.com.gh;rjmalm@mtn.com.gh;soakoto@mtn.com.gh;vkdzineku@mtn.com.gh;ganesh.giri@tecnotree.com;balamurugan.palaniswamy@tecnotree.com
+order_rejections_for_executed_provisioning_commands ganesh.giri@tecnotree.com
 sms_queue ganesh.giri@tecnotree.com
+failed_sim_registrations ganesh.giri@tecnotree.com
 concierge_performance balamurugan.palaniswamy@tecnotree.com;umesh.nanjundaiah@tecnotree.com
 data_offer_rental jkbam@mtn.com.gh;rjmalm@mtn.com.gh;dtenartey@mtn.com.gh;soakoto@mtn.com.gh;msali@mtn.com.gh;titani@mtn.com.gh;abfaisal@mtn.com.gh;dannan@mtn.com.gh;sannan@mtn.com.gh;doseiboateng@mtn.com.gh
 offer_rental jkbam@mtn.com.gh;rjmalm@mtn.com.gh;dtenartey@mtn.com.gh;soakoto@mtn.com.gh;msali@mtn.com.gh;titani@mtn.com.gh;abfaisal@mtn.com.gh;dannan@mtn.com.gh;sannan@mtn.com.gh;doseiboateng@mtn.com.gh

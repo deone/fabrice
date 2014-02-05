@@ -1,3 +1,4 @@
+rating_rejection_rectification yesterday
 concierge_performance yesterday
 total_uploaded_files yesterday
 provisioning_rejection yesterday

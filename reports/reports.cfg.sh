@@ -43,6 +43,6 @@ fi
 recipients="osikoya.oladayo@tecnotree.com"
 cc="alwaysdeone@gmail.com"
 
-live_cc="jegadeesan.velusamy@tecnotree.com;osikoya.oladayo@tecnotree.com;adetimilehin.hammed@tecnotree.com;Chandra.Mohan@tecnotree.com;eeswar.jagadisan@tecnotree.com;solomon.annan@tecnotree.com"
+live_cc="jegadeesan.velusamy@tecnotree.com;osikoya.oladayo@tecnotree.com;adetimilehin.hammed@tecnotree.com;chandra.mohan@tecnotree.com;eeswar.jagadisan@tecnotree.com;solomon.annan@tecnotree.com"
 
 recipients_file="${FABRICE_PATH}reports/recipients.txt"
