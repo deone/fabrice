@@ -1,5 +1,4 @@
 @@commands.sql
-set feedback off
 
 prompt SERV_ACC_LINK_CODE_N, SERVICE_KEY_CODE_V
 

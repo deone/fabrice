@@ -1,6 +1,7 @@
 concierge_performance yesterday
 total_uploaded_files yesterday
 provisioning_rejection yesterday
+failed_sim_registrations yesterday
 order_rejections_for_executed_provisioning_commands yesterday
 data_offer_rental last-month
 offer_rental last-month
