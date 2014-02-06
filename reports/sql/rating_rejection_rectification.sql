@@ -1,4 +1,4 @@
-@@commands.sql
+@@commands_csv.sql
 
 prompt Error Code, Count 
 

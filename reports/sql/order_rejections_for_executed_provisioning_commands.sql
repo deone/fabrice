@@ -1,4 +1,4 @@
-@@commands.sql
+@@commands_csv.sql
 
 prompt SERV_ACC_LINK_CODE_N, SERVICE_KEY_CODE_V
 

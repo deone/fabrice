@@ -1,4 +1,4 @@
-@@commands.sql
+@@commands_csv.sql
 
 prompt Mobile Number, SIM Number, Error Description
 

@@ -1,0 +1,3 @@
+@@commands.sql
+
+set colsep ,

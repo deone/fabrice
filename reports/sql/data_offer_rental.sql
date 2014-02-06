@@ -1,4 +1,4 @@
-@@commands.sql
+@@commands_csv.sql
 
 prompt Offer Code, Offer Description, Rental Amount
 

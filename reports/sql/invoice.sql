@@ -1,4 +1,4 @@
-@@commands.sql
+@@commands_csv.sql
 
 prompt Account Code, Account Name, Invoice Amt Inc. Tax, Subscriber Category, Subscriber Sub Category
 

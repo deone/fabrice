@@ -1,4 +1,4 @@
-@@commands.sql
+@@commands_csv.sql
 
 prompt Action, Total, Success, Fail, % Success, Failure %, Average (HH:MM:SS), Minimum (HH:MM:SS), Maximum (HH:MM:SS)
 

@@ -1,4 +1,4 @@
-@@commands.sql
+@@commands_csv.sql
 
 prompt Called Number, Calling Number, Date, Duration, Charge
 
