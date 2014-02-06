@@ -1,4 +1,5 @@
 total_uploaded_files ganesh.giri@tecnotree.com
+rating_rejection ganesh.giri@tecnotree.com
 rating_rejection_rectification ganesh.giri@tecnotree.com
 provisioning_rejection Billing&Charging@mtn.com.gh;dtenartey@mtn.com.gh;rjmalm@mtn.com.gh;soakoto@mtn.com.gh;vkdzineku@mtn.com.gh;ganesh.giri@tecnotree.com;balamurugan.palaniswamy@tecnotree.com
 order_rejections_for_executed_provisioning_commands ganesh.giri@tecnotree.com

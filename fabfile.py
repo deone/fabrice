@@ -10,6 +10,7 @@ env.shell = '/bin/bash -c'
 
 # Cron map for report schedule
 script_cron_map = {
+    'rating_rejection': '55 08 * * *',
     'rating_rejection_rectification': '55 08 * * *',
     'failed_sim_registrations': '55 08 * * *',
     'order_rejections_for_executed_provisioning_commands': '55 08 * * *',
