@@ -26,11 +26,9 @@ if [[ "$report_name" == "sms_queue" ]]; then
     sql_results=$results_dir/${report_name}.out
     email=$emails_dir/${report_name}.mail
 else
-    if [[ "$report_name" == "provisioning_rejection" ]]; then
-	sql_results=$results_dir/${report_name}_${_text_date_}.txt
-    else
-	sql_results=$results_dir/${report_name}_${_text_date_}.csv
-    fi
+    report_type=`awk -v r=$report_name '{ if ($1 == r) print $2; }' $mailcfg`
+
+    sql_results=$results_dir/${report_name}_${_text_date_}.${report_type}
     email=$emails_dir/template.mail
 fi
 
@@ -41,12 +39,6 @@ if [[ "$report_name" != "sms_queue" ]]; then
     sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
     if [[ "$report_name" == "data_offer_rental" ]]; then
 	sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $value >> $sql_results
-    fi
-
-    if [[ "$report_name" == "provisioning_rejection" ]]; then
-	tmp=$reports_out_path/prov_rej.tmp
-	sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $tmp
-	cat $tmp | grep -v "^$" | grep -v "PL/SQL procedure"  > $sql_results
     fi
 fi
 
@@ -68,7 +60,7 @@ EOF
 fi
 
 if [[ "$FABRICE_DEBUG" == "false" ]]; then
-    recipients=`awk -v r=$report_name '{ if ($1 == r) print $3; }' $mailcfg`
+    recipients=`awk -v r=$report_name '{ if ($1 == r) print $4; }' $mailcfg`
     cc=$live_cc
 fi
 

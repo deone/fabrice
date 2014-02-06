@@ -16,7 +16,7 @@ results_dir="${reports_out_path}results"
 files_dir="${reports_out_path}files"
 
 mailcfg="${FABRICE_PATH}reports/mail.cfg.txt"
-period=`awk -v r=$report_name '{ if ($1 == r) print $2; }' $mailcfg`
+period=`awk -v r=$report_name '{ if ($1 == r) print $3; }' $mailcfg`
 
 # date
 if [ "$FABRICE_DEBUG" == "true" ]; then
