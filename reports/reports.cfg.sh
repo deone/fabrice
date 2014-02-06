@@ -15,7 +15,7 @@ emails_dir="${reports_out_path}emails"
 results_dir="${reports_out_path}results"
 files_dir="${reports_out_path}files"
 
-mailcfg="${FABRICE_PATH}reports/mailcfg.txt"
+mailcfg="${FABRICE_PATH}reports/mail.cfg.txt"
 period=`awk -v r=$report_name '{ if ($1 == r) print $2; }' $mailcfg`
 
 # date
