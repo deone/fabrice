@@ -1,6 +1,6 @@
 @@commands_txt.sql
 
-prompt Chrono Number|Service ID|CAI Command Request String|CAI Command Response|Action Code|Description
+prompt Chrono Number | Service ID | CAI Command Request String | CAI Command Response | Action Code | Description
 
 SELECT CHRONO_NUM_N, SERVICE_ID_V, CAI_CMD_REQ_STRING, SUBSTR(CAI_CMD_RESP_STRING,28,9) AS CAI_CMD_RESP, ACTION_CODE_V, PS.DESCRIPTION
 FROM PS_ACTION PS, CB_SUBS_PROVISIONING CSP

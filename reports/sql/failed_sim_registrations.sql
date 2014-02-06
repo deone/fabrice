@@ -1,6 +1,6 @@
 @@commands_txt.sql
 
-prompt Mobile Number|SIM Number|Error Description
+prompt Mobile Number | SIM Number | Error Description
 
 SELECT DISTINCT MOBILE_NUMBER_V, SIM_NUM_V, ERROR_DESCRIPTION_V 
 FROM GSM_SIM_REGISTRATION_DETAILS
