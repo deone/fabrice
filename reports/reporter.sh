@@ -68,7 +68,7 @@ EOF
 fi
 
 if [[ "$FABRICE_DEBUG" == "false" ]]; then
-    recipients=`awk -v r=$report_name '{ if ($1 == r) print $2; }' $recipients_file`
+    recipients=`awk -v r=$report_name '{ if ($1 == r) print $3; }' $mailcfg`
     cc=$live_cc
 fi
 
