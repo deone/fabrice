@@ -10,6 +10,7 @@ env.shell = '/bin/bash -c'
 
 # Cron map for report schedule
 script_cron_map = {
+    'offer_cancel': '00 06 * * *',
     'rating_rejection': '55 08 * * *',
     'rating_rejection_rectification': '55 08 * * *',
     'failed_sim_registrations': '55 08 * * *',
@@ -29,7 +30,7 @@ script_cron_map = {
 def archive():
     # 1. Archive app.
     local("mkdir -p reports/build/fabrice/reports")
-    local("cp reports/periods.txt reports/reporter.sh reports/recipients.txt reports/reports.cfg.sh reports/build/fabrice/reports/")
+    local("cp reports/reporter.sh reports/mail.cfg.txt reports/reports.cfg.sh reports/build/fabrice/reports/")
 
     with lcd("reports/build/fabrice/reports"):
 	local("mkdir out logs sql")
