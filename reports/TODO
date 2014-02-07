@@ -1,3 +1,2 @@
-- We might have to re-write reporter.sh in python if it gets more complex.
-- Add eeswar.jagadisan@tecnotree.com, solomon.annan@tecnotree.com to receipients list.
 - Merge other reports with the new structure.
+- Automate KPI things and run first week of every month.
