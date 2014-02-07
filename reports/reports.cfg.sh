@@ -33,12 +33,22 @@ fi
 # date
 if [[ "$FABRICE_DEBUG" == "true" ]]; then
     query_date=`date $date_flag +"%Y%m"`
-    text_date=`date $date_flag +"%d %B %Y"`
-    _text_date_=`date $date_flag +"%d_%B_%Y"`
+    if [[ "$period" == "last-month" ]]; then
+	text_date=`date $date_flag +"%B %Y"`
+	_text_date_=`date $date_flag +"%B_%Y"`
+    else
+	text_date=`date $date_flag +"%d %B %Y"`
+	_text_date_=`date $date_flag +"%d_%B_%Y"`
+    fi
 else
-    query_date=`date +"%Y%m" ${date_flag}`
-    text_date=`date +"%d %B %Y" ${date_flag}`
-    _text_date_=`date +"%d_%B_%Y" ${date_flag}`
+    query_date=`date +"%Y%m" $date_flag`
+    if [[ "$period" == "last-month" ]]; then
+	text_date=`date +"%B %Y" $date_flag`
+	_text_date_=`date +"%B_%Y" $date_flag`
+    else
+	text_date=`date +"%d %B %Y" $date_flag`
+	_text_date_=`date +"%d_%B_%Y" $date_flag`
+    fi
 fi
 
 # email
