@@ -1,6 +1,7 @@
 Report_Name						Report_Type		Period	    Recipients
 offer_cancel						txt			yesterday   passibey@mtn.com.gh
 offer_addition						txt			yesterday   passibey@mtn.com.gh
+daily_port_in						csv			yesterday   jdarko@mtn.com.gh
 total_uploaded_files					csv			yesterday   ganesh.giri@tecnotree.com
 rating_rejection					csv			yesterday   ganesh.giri@tecnotree.com
 rating_rejection_rectification				csv			yesterday   ganesh.giri@tecnotree.com
