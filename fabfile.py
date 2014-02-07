@@ -10,6 +10,7 @@ env.shell = '/bin/bash -c'
 
 # Cron map for report schedule
 script_cron_map = {
+    'registration_KPI': '00 12 01 * *',
     'daily_port_in': '00 07 * * *',
     'daily_activation': '30 07 * * *',
     'daily_provisioning_rejection': '00 08 * * *',
