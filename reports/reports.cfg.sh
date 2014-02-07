@@ -18,25 +18,27 @@ files_dir="${reports_out_path}files"
 mailcfg="${FABRICE_PATH}reports/mail.cfg.txt"
 period=`awk -v r=$report_name '{ if ($1 == r) print $3; }' $mailcfg`
 
-# date
-if [ "$FABRICE_DEBUG" == "true" ]; then
-    query_date=`date -v -1m +"%Y%m"`
-    if [[ "$period" == "yesterday" ]]; then
-	text_date=`date -v -1d +"%d %B %Y"`
-	_text_date_=`date -v -1d +"%d_%B_%Y"`
-    else
-	text_date=`date -v -1m +"%B %Y"`
-	_text_date_=`date -v -1m +"%B_%Y"`
-    fi
+if [[ "$FABRICE_DEBUG" == "false" ]]; then
+    date_flag="-d "$period
 else
-    query_date=`date +"%Y%m" -d last-month`
     if [[ "$period" == "yesterday" ]]; then
-	text_date=`date +"%d %B %Y" -d yesterday`
-	_text_date_=`date +"%d_%B_%Y" -d yesterday`
+	date_flag="-v -1d"
+    elif [[ "$period" == "last-month" ]]; then
+	date_flag="-v -1m"
     else
-	text_date=`date +"%B %Y" -d last-month`
-	_text_date_=`date +"%B_%Y" -d last-month`
+	date_flag="-v -0d"
     fi
+fi
+
+# date
+if [[ "$FABRICE_DEBUG" == "true" ]]; then
+    query_date=`date $date_flag +"%Y%m"`
+    text_date=`date $date_flag +"%d %B %Y"`
+    _text_date_=`date $date_flag +"%d_%B_%Y"`
+else
+    query_date=`date +"%Y%m" ${date_flag}`
+    text_date=`date +"%d %B %Y" ${date_flag}`
+    _text_date_=`date +"%d_%B_%Y" ${date_flag}`
 fi
 
 # email
