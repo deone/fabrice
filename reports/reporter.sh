@@ -38,6 +38,7 @@ if [[ "$report_name" != "sms_queue" ]]; then
     value=101000001${query_date}0
     sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
     if [[ "$report_name" == "data_offer_rental" ]]; then
+	echo "" >> $sql_results
 	sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $value >> $sql_results
     fi
 fi

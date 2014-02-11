@@ -1,5 +1,7 @@
 @@commands_csv.sql
 
+prompt Account Link Code Count
+
 SELECT COUNT(DISTINCT (SERV_ACC_LINK_CODE_N)) 
 FROM CB_OFFERS A, CB_INVOICE_DETAILS B 
 WHERE BILL_CYCLE_FULL_CODE_N = &1
