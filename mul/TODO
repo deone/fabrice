@@ -1,2 +1,3 @@
 Log commands without credit limit into mul/out/cl.out.
 Modify mark_done.sh to mark only those that are done, not all entries set to N.
+Handle RESP: -3010 error.

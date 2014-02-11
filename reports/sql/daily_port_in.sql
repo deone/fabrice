@@ -1,6 +1,7 @@
-@@commands_csv.sql
+@@commands.sql
 
-prompt Recipient, Donor, MSISDN, Agent, Date, Status, Given Name, Last Name, ID Number
+set heading on
+SET MARKUP HTML ON SPOOL ON
 
 SELECT   recipient_operator_v, donor_operator_v,
          mobile_number_v,
