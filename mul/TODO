@@ -1,3 +1,6 @@
-Log commands without credit limit into mul/out/cl.out.
 Modify mark_done.sh to mark only those that are done, not all entries set to N.
-Handle RESP: -3010 error.
+Write all unknown errors, their tracebacks and non-zero responses to error log.
+Unit-test send_command.py. Would we be needing an EMA mock object? Returns various (known) responses as test cases require.
+We might need to eventually match response codes to their descriptions so that we don't keep checking Excel file.
+
+Write script that mails invalid MSISDNs file and deletes it - schedule to run (say every 5 minutes) with cron. Don't check whether file is open or not.

@@ -8,8 +8,9 @@
 6. Compute old mul - usage counter.
 7. Set new mul to computed value.
 8. Construct MUL xml request with new mul.
-9. Send request to EMA URL.
-10. Log request and response string.
+9. Write invalid MSISDNs (without MUL value) to file.
+10. Send commands to EMA.
+11. Log request and response strings.
 """
 
 import os, urllib2, sys, platform
@@ -20,20 +21,23 @@ from bs4 import BeautifulSoup
 url = "http://10.139.41.58:6004/EMA/EMA_PROXY"
 
 if platform.system() == "Darwin":
-    fabrice_mul_path = "/Users/deone/.virtualenvs/fabrice/fabrice/mul/"
+    fabrice_mul_path = "/Users/deone/.virtualenvs/fabrice/fabrice/mul"
 elif platform.system() == "Linux":
-    fabrice_mul_path = "/home/pm_client/fabrice/mul/"
+    fabrice_mul_path = "/home/pm_client/fabrice/mul"
 elif platform.system() == "Windows":
-    fabrice_mul_path = "C:/fabrice/mul/"
+    fabrice_mul_path = "C:/fabrice/mul"
     
-commands = "%sout/commands.out" % fabrice_mul_path
-log_file = "%slogs/mul.log" % fabrice_mul_path
-todo = "%sTODO" % fabrice_mul_path
+commands = "%s/out/commands.out" % fabrice_mul_path
+cl_file = "%s/out/cl.txt" % fabrice_mul_path
+log_file = "%s/logs/mul.log" % fabrice_mul_path
+errors = "%s/logs/errors.log" % fabrice_mul_path
 
 def build_uc_command(msisdn):
+    """ Build usage counter command with `msisdn` """
     return "GET:ACCOUNTINFORMATION:2:SubscriberNumber,%s;" % msisdn
 
 def build_mul_command(old_command, value):
+    """ Build mul command with `old_command` and `value` """
     parts = old_command.split(',')
     return "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (
 	parts[0],
@@ -58,6 +62,7 @@ def build_mul_command(old_command, value):
     )
 
 def build_request(command):
+    """ Build a request with `command` """
     xml = """
     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ema="http://schema.concierge.com/ema">
 	<soapenv:Header/>
@@ -83,6 +88,7 @@ def build_request(command):
     return request
 
 def send_request(request):
+    """ Send `request` to url (already a part of `request`) and get response """
     response = urllib2.urlopen(request)
     return BeautifulSoup(response).resultmessage.string
   
@@ -92,10 +98,11 @@ def main(cmd_file, deduct_counter=False):
 	try:
 	    if deduct_counter:
 		msisdn, old_mul = get_msisdn_old_mul(line)
-		usage_details = get_usage_details(msisdn)
-		usage_counter = usage_details['counter']
-		new_mul = compute_new_mul(old_mul, usage_counter)
-		mul_command = build_mul_command(line, new_mul)
+		if old_mul:
+		    usage_details = get_usage_details(msisdn)
+		    usage_counter = usage_details['counter']
+		    new_mul = compute_new_mul(old_mul, usage_counter)
+		    mul_command = build_mul_command(line, new_mul)
 	    else:
 		mul_command = line[:-1]
 
@@ -103,21 +110,23 @@ def main(cmd_file, deduct_counter=False):
 	    response = send_request(request)
 	    debug_info = (mul_command, response)
 
-	    write_log(str(debug_info) + "\n")
+	    write_to_file(str(debug_info) + "\n", log_file)
 	except:
 	    print_exc()
-	    with open(todo, 'a') as td:
-		td.write(line)
-	    td.closed
+	    write_to_file(line, errors)
 	    continue
 
 def get_msisdn_old_mul(command):
+    """ If we can't find mul value in `command`, write msisdn to file. Else, return msisdn and mul value """
     parts = command.split(',')
     msisdn = parts[1].split(':')[0]
     old_mul = parts[6]
-    return [msisdn, old_mul]
+    if old_mul:
+	return [msisdn, old_mul]
+    write_to_file(msisdn[3:] + "\n", cl_file)
 
 def compute_new_mul(old_mul, usage_counter):
+    """ Deduct `usage_counter` from `old_mul`. Return 0 if result is negative """
     val = Decimal(old_mul) - Decimal(usage_counter)
     new_mul = val.quantize(Decimal('.01'), rounding=ROUND_UP)
     if new_mul < 0:
@@ -125,13 +134,12 @@ def compute_new_mul(old_mul, usage_counter):
     return str(new_mul)
 
 def get_usage_details(msisdn):
+    """ Get values of usage counter and usage threshold for `msisdn` """
     command = build_uc_command(msisdn)
-
     request = build_request(command)
     response = send_request(request)
 
     soup = BeautifulSoup(response)
-
     result = {
 	'counter': soup.usagecountermonetaryvalue.string,
 	'threshold': soup.usagethresholdmonetaryvalue.string
@@ -139,10 +147,12 @@ def get_usage_details(msisdn):
 
     return result
 
-def write_log(info):
-    with open(log_file, 'a') as log:
-	log.write(info)
-    log.closed
+def write_to_file(info, filename):
+    """ Write `info` into file with given `filename` """
+    with open(filename, 'a') as file_:
+	file_.write(info)
+    file_.closed
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
