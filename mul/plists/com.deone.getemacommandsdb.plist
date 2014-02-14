@@ -9,6 +9,7 @@
     <array>
 	<string>sh</string>
 	<string>/Users/deone/.virtualenvs/fabrice/fabrice/mul/get_ema_commands.sh</string>
+	<string>--source=db</string>
     </array>
 
     <key>Nice</key>
@@ -21,9 +22,9 @@
     <true/>
 
     <key>StandardErrorPath</key>
-    <string>/Users/deone/.virtualenvs/fabrice/fabrice/mul/logs/getemacommands.log</string>
+    <string>/Users/deone/.virtualenvs/fabrice/fabrice/mul/logs/getemacommandsdb.log</string>
 
     <key>StandardOutPath</key>
-    <string>/Users/deone/.virtualenvs/fabrice/fabrice/mul/logs/getemacommands.log</string>
+    <string>/Users/deone/.virtualenvs/fabrice/fabrice/mul/logs/getemacommandsdb.log</string>
 </dict>
 </plist>
