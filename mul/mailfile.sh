@@ -1,6 +1,5 @@
 #!/bin/sh
 
-date
 email="/Users/deone/.virtualenvs/fabrice/fabrice/mul/out/email.txt"
 
 cat << EOF > $email
