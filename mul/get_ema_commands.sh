@@ -1,5 +1,7 @@
 #!/bin/sh
 
+date
+
 # 1. Select numbers from db.
 # 2. Generate EMA commands by running them through the MUL mismatch script.
 # 3. Fire commands to EMA endpoint.
