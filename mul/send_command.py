@@ -29,7 +29,7 @@ elif platform.system() == "Windows":
     
 commands = "%s/out/commands.out" % fabrice_mul_path
 cl_file = "%s/out/cl.txt" % fabrice_mul_path
-log_file = "%s/logs/mul.log" % fabrice_mul_path
+log_file = "%s/logs/commands.log" % fabrice_mul_path
 errors = "%s/logs/errors.log" % fabrice_mul_path
 
 def build_uc_command(msisdn):
@@ -97,12 +97,15 @@ def main(cmd_file, deduct_counter=False):
     for line in open_file:
 	try:
 	    if deduct_counter:
-		msisdn, old_mul = get_msisdn_old_mul(line)
-		if old_mul:
-		    usage_details = get_usage_details(msisdn)
-		    usage_counter = usage_details['counter']
-		    new_mul = compute_new_mul(old_mul, usage_counter)
-		    mul_command = build_mul_command(line, new_mul)
+		try:
+		    msisdn, old_mul = get_msisdn_old_mul(line)
+		except TypeError:
+		    print "No MUL value. MSISDN written to file."
+		    continue
+		usage_details = get_usage_details(msisdn)
+		usage_counter = usage_details['counter']
+		new_mul = compute_new_mul(old_mul, usage_counter)
+		mul_command = build_mul_command(line, new_mul)
 	    else:
 		mul_command = line[:-1]
 

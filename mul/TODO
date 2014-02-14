@@ -1,6 +1,8 @@
-Modify mark_done.sh to mark only those that are done, not all entries set to N.
 Write all unknown errors, their tracebacks and non-zero responses to error log.
+Schedule get_ema_commands.sh so that everything happens automatically from beginning to end.
+send_command.py can delete commands file after processing so that it only runs if there's a commands file, which is the result of get_ema_commands.sh.
+Modify mark_done.sh to mark only processed MSISDNs as done - this is output from send_command.py (new file - processed.txt). Schedule this too.
+
 Unit-test send_command.py. Would we be needing an EMA mock object? Returns various (known) responses as test cases require.
 We might need to eventually match response codes to their descriptions so that we don't keep checking Excel file.
-
-Write script that mails invalid MSISDNs file and deletes it - schedule to run (say every 5 minutes) with cron. Don't check whether file is open or not.
+We can schedule another instance of get_commands.sh that reads input from numbers.out instead of DB so that we just need to copy BMC numbers into numbers.out and allow it run. We just need to search the logs for the numbers to know whether to close the BMC issue or not.
