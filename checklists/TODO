@@ -1,3 +1,4 @@
 Automate bulk upload
 1. Run cron job to fetch results and pipe to file with the right name and date.
 2. Set feedback off and write 'BULLOFFI, ' plus count of lines in file to top of file.
+Automate process check. ps -ef | grep java, Up
