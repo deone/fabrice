@@ -1,5 +1,4 @@
-Schedule send_command.py, delete commands.out after processing so that it only runs if commands.out exists.
-Modify (and schedule) mark_done.sh to mark only processed MSISDNs (in processed.txt) as done.
+Schedule get_ema_commands, send_command.py, mark_done.sh.
 
 Unit-test send_command.py. Would we be needing an EMA mock object? Returns various (known) responses as test cases require.
 We might need to eventually match response codes to their descriptions so that we don't keep checking Excel file.

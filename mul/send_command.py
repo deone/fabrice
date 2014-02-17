@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+
+from subprocess import call
+call('date')
+
 """
 1. Read line from commands.out.
 2. Grab msisdn and old mul from line.
@@ -30,7 +34,7 @@ elif platform.system() == "Windows":
 commands = "%s/out/commands.out" % fabrice_mul_path
 cl_file = "%s/out/cl.txt" % fabrice_mul_path
 processed = "%s/out/processed.txt" % fabrice_mul_path
-log_file = "%s/logs/commands.log" % fabrice_mul_path
+success = "%s/logs/success.log" % fabrice_mul_path
 errors = "%s/logs/errors.log" % fabrice_mul_path
 
 def build_uc_command(msisdn):
@@ -98,7 +102,6 @@ def is_valid(response):
     code = response.split(':')[2]
     if code == '0;':
 	return True
-    write_to_file(response, errors)
 
 def strip_country_code(msisdn):
     """ Return msisdn without country code """
@@ -143,33 +146,42 @@ def write_to_file(info, filename):
     file_.closed
 
 def main(cmd_file, deduct_counter=False):
-    open_file = open(cmd_file, 'r')
-    for line in open_file:
-	try:
-	    if deduct_counter:
-		try:
-		    msisdn, old_mul = get_msisdn_old_mul(line)
-		except TypeError:
-		    continue
-		usage_details = get_usage_details(msisdn)
-		usage_counter = usage_details['counter']
-		new_mul = compute_new_mul(old_mul, usage_counter)
-		mul_command = build_mul_command(line, new_mul)
-	    else:
-		mul_command = line[:-1]
+    try:
+	open_file = open(cmd_file, 'r')
+    except IOError:
+	sys.exit("Exiting...Commands file not found")
+    else:
+	for line in open_file:
+	    try:
+		if deduct_counter:
+		    try:
+			msisdn, old_mul = get_msisdn_old_mul(line)
+		    except TypeError:
+			continue
+		    usage_details = get_usage_details(msisdn)
+		    usage_counter = usage_details['counter']
+		    new_mul = compute_new_mul(old_mul, usage_counter)
+		    mul_command = build_mul_command(line, new_mul)
+		else:
+		    mul_command = line[:-1]
 
-	    request = build_request(mul_command)
-	    response = send_request(request)
+		request = build_request(mul_command)
+		response = send_request(request)
 
-	    if is_valid(response):
-		write_to_file(strip_country_code(msisdn), processed)
+		debug_info = (mul_command, response)
+		if is_valid(response):
+		    write_to_file(str(debug_info), success)
 
-	    debug_info = (mul_command, response)
-	    write_to_file(str(debug_info), log_file)
-	except:
-	    print_exc()
-	    write_to_file(line, errors)
-	    continue
+		    record = "'" + strip_country_code(msisdn) + "',"
+		    write_to_file(record, processed)
+		else:
+		    write_to_file(str(debug_info), errors)
+
+	    except:
+		print_exc()
+		write_to_file(line, errors)
+		continue
+	os.remove(cmd_file)
 
 
 if __name__ == "__main__":

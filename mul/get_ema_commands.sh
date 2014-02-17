@@ -25,7 +25,7 @@ fi
 
 # Fetch numbers from either file or DB as source.
 if [[ -n "$@" ]]; then
-    if [ "$@" == "--source=db" ]; then
+    if [[ "$@" == "--source=db" ]]; then
 	sqlplus -S $conn_string @${FABRICE_PATH}mul/sql/numbers.sql > $numbers
     else
 	echo "Invalid option. Please use --source=db"
