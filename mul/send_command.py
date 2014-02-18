@@ -64,12 +64,6 @@ def get_usage_details(msisdn):
 
     return result
 
-def write_to_file(info, filename):
-    """ Write `info` into file with given `filename` """
-    with open(filename, 'a') as file_:
-	file_.write(info + "\n")
-    file_.closed
-
 def main(cmd_file, deduct_counter=False):
     try:
 	open_file = open(cmd_file, 'r')

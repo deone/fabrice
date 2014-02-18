@@ -15,7 +15,7 @@ EOF
 
 clfile="/Users/deone/.virtualenvs/fabrice/fabrice/mul/out/cl.txt"
 recipients="eeswar.jagadisan@tecnotree.com"
-cc="osikoya.oladayo@tecnotree.com;chandra.mohan@tecnotree.com"
+cc="chandra.mohan@tecnotree.com"
 
 if [ -f $clfile ]; then
     /opt/boxen/homebrew/bin/mutt -s "Modify Credit Limit" -c $cc -a $clfile -- $recipients < $email

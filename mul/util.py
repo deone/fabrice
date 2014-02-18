@@ -18,3 +18,9 @@ def is_valid(response):
 def strip_country_code(msisdn):
     """ Return msisdn without country code """
     return msisdn[3:]
+
+def write_to_file(info, filename):
+    """ Write `info` into file with given `filename` """
+    with open(filename, 'a') as file_:
+	file_.write(info + "\r\n")
+    file_.closed
