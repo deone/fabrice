@@ -14,3 +14,9 @@ cl_file = "%s/out/cl.txt" % fabrice_mul_path
 processed = "%s/out/processed.txt" % fabrice_mul_path
 success = "%s/logs/success.log" % fabrice_mul_path
 errors = "%s/logs/errors.log" % fabrice_mul_path
+
+error_codes = {
+    '17204': 'Temporary Blocked',
+    '17105': 'Internal Server Error',
+    '17103': 'Data out of bounds'
+}

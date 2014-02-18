@@ -24,22 +24,13 @@ from bs4 import BeautifulSoup
 
 from settings import *
 from commandlib import *
+from util import *
 
 
 def send_request(request):
     """ Send `request` to url (already a part of `request`) and get response """
     response = urllib2.urlopen(request)
     return BeautifulSoup(response).resultmessage.string
-
-def is_valid(response):
-    """ Return true if `response` is valid. Write invalid responses to error log """
-    code = response.split(':')[2]
-    if code == '0;':
-	return True
-
-def strip_country_code(msisdn):
-    """ Return msisdn without country code """
-    return msisdn[3:]
 
 def get_msisdn_old_mul(command):
     """ If we can't find mul value in `command`, write msisdn to file and print message on console. Else, return msisdn and mul value """
@@ -103,13 +94,16 @@ def main(cmd_file, deduct_counter=False):
 		response = send_request(request)
 
 		debug_info = (mul_command, response)
-		if is_valid(response):
+
+		result = is_valid(response)
+
+		if result is True:
 		    write_to_file(str(debug_info), success)
 
 		    record = "'" + strip_country_code(msisdn) + "',"
 		    write_to_file(record, processed)
 		else:
-		    write_to_file(str(debug_info), errors)
+		    write_to_file(str(debug_info) + " " + error_codes[result], errors)
 
 	    except:
 		print_exc()
