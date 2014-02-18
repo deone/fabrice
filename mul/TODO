@@ -1,5 +1,5 @@
 Schedule get_ema_commands, send_command.py, mark_done.sh.
 
+You should probably write a new, object-oriented version of send_command.py.
 Unit-test send_command.py. Would we be needing an EMA mock object? Returns various (known) responses as test cases require.
-We might need to eventually match response codes to their descriptions so that we don't keep checking Excel file.
 We can schedule another instance of get_commands.sh that reads input from numbers.out instead of DB so that we just need to copy BMC numbers into numbers.out and allow it run. We just need to search the logs for the numbers to know whether to close the BMC issue or not.
