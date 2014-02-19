@@ -61,7 +61,7 @@ def schedule(job_list):
 
     # Append script's cron job to the crontab backup
     for key, value in script_cron_map.iteritems():
-	run("echo '%s sh fabrice/reports/reporter.sh %s.sh >> fabrice/reports/logs/%s.log 2>&1' >> tmpcrontab" % (value, key, key))
+	run("echo '%s sh fabrice/reports/reporter.sh fabrice/reports/sql/%s.sql >> fabrice/reports/logs/%s.log 2>&1' >> tmpcrontab" % (value, key, key))
 
     # Replace current crontab with backup
     run("crontab -r")

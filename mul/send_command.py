@@ -67,7 +67,7 @@ def get_usage_details(msisdn):
 def main(cmd_file, deduct_counter=False):
     try:
 	open_file = open(cmd_file, 'r')
-    except IOError:
+    except:
 	sys.exit("Exiting...Commands file not found")
     else:
 	for line in open_file:
