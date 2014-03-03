@@ -7,10 +7,6 @@ file_name=`echo $@ | rev | cut -d '/' -f 1 | rev`
 report_name=`echo $file_name | cut -d '.' -f 1`
 extension=`echo $file_name | cut -d '.' -f 2`
 
-echo $file_name
-echo $report_name
-echo $extension
-
 # Exit with message if our file isn't SQL
 if [[ "$extension" != "sql" ]]; then
     echo "I only work with SQL files, weirdo!"

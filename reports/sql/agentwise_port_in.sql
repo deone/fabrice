@@ -1,6 +1,4 @@
-@@commands_csv.sql
-
-prompt Agent, Count
+@@commands_xls.sql
 
 SELECT AGENT, COUNT(1) 
     FROM (SELECT NVL (agent_name_v,

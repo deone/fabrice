@@ -1,7 +1,4 @@
-@@commands.sql
-
-set heading on
-SET MARKUP HTML ON SPOOL ON
+@@commands_xls.sql
 
 SELECT   recipient_operator_v, donor_operator_v,
          mobile_number_v,
