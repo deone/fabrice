@@ -72,11 +72,12 @@ def main(cmd_file, deduct_counter=False):
     else:
 	for line in open_file:
 	    try:
+		try:
+		    msisdn, old_mul = get_msisdn_old_mul(line)
+		except TypeError:
+		    continue
+
 		if deduct_counter:
-		    try:
-			msisdn, old_mul = get_msisdn_old_mul(line)
-		    except TypeError:
-			continue
 		    usage_details = get_usage_details(msisdn)
 		    usage_counter = usage_details['counter']
 		    new_mul = compute_new_mul(old_mul, usage_counter)
