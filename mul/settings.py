@@ -16,7 +16,7 @@ success = "%s/logs/success.log" % fabrice_mul_path
 errors = "%s/logs/errors.log" % fabrice_mul_path
 
 error_codes = {
-    '17204': 'Temporary Blocked',
+    '17204': 'Temporarily Blocked',
     '17105': 'Internal Server Error',
     '17103': 'Data out of bounds'
 }

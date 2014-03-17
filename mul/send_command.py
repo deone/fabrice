@@ -43,26 +43,26 @@ def get_msisdn_old_mul(command):
     print "No MUL value for %s. MSISDN written to file." % strip_country_code(msisdn)
 
 def compute_new_mul(old_mul, usage_counter):
-    """ Deduct `usage_counter` from `old_mul`. Return 0 if result is negative """
-    val = Decimal(old_mul) - Decimal(usage_counter)
-    new_mul = val.quantize(Decimal('.01'), rounding=ROUND_UP)
-    if new_mul < 0:
-	new_mul = 0
-    return str(new_mul)
+  """ Deduct `usage_counter` from `old_mul`. Return 0 if result is negative """
+  val = Decimal(old_mul) - Decimal(usage_counter)
+  new_mul = val.quantize(Decimal('.01'), rounding=ROUND_UP)
+  if new_mul < 0:
+    new_mul = 0
+  return str(new_mul)
 
 def get_usage_details(msisdn):
-    """ Get values of usage counter and usage threshold for `msisdn` """
-    command = build_uc_command(msisdn)
-    request = build_request(command)
-    response = send_request(request)
+  """ Get values of usage counter and usage threshold for `msisdn` """
+  command = build_uc_command(msisdn)
+  request = build_request(command)
+  response = send_request(request)
 
-    soup = BeautifulSoup(response)
-    result = {
-	'counter': soup.usagecountermonetaryvalue.string,
-	'threshold': soup.usagethresholdmonetaryvalue.string
-    }
+  soup = BeautifulSoup(response)
+  result = {
+      'counter': soup.usagecountermonetaryvalue.string,
+      'threshold': soup.usagethresholdmonetaryvalue.string
+  }
 
-    return result
+  return result
 
 def main(cmd_file, deduct_counter=False):
     try:

@@ -53,9 +53,9 @@ def build_grep_string(job_list):
     grep_string = " | grep -v "
     return grep_string + grep_string.join(job_list)
 
-def schedule(job_list):
+def schedule(jobs):
     # Backup crontab with the exception of the jobs to be deployed
-    job_list = ["'" + job + ".sh'" for job in job_list]
+    job_list = ["'" + job + "'" for job in jobs.keys()]
     grep_string = build_grep_string(job_list)
     run("crontab -l%s > tmpcrontab" % grep_string)
 
