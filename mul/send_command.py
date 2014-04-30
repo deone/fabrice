@@ -39,7 +39,7 @@ def get_msisdn_old_mul(command):
   old_mul = parts[6]
   if old_mul:
     return [msisdn, old_mul]
-  write_to_file(strip_country_code(msisdn), cl_file)
+  write_to_file("'" + strip_country_code(msisdn) + "',", cl_file)
   print "No MUL value for %s. MSISDN written to file." % strip_country_code(msisdn)
 
 def compute_new_mul(old_mul, usage_counter):
