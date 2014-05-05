@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-from subprocess import call
-call('date')
-
 """
 1. Read line from commands.out.
 2. Grab msisdn and old mul from line.
