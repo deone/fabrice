@@ -58,12 +58,10 @@ def get_usage_details(msisdn):
 
   soup = BeautifulSoup(response)
 
-  usage_counters = soup.find_all('usagecountermonetaryvalue')
-
-  if len(usage_counters) == 2:
-    counter = usage_counters[1].string
-  else:
-    counter = usage_counters[0].string
+  result_set = soup.find_all('usagecounterusagethresholdinfo')
+  for r in result_set:
+    if r.usagecounterid.string == '2':
+      counter = r.usagecountermonetaryvalue.string
 
   result = {
     'counter': counter,
