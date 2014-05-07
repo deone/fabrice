@@ -55,4 +55,4 @@ fi
 recipients="osikoya.oladayo@tecnotree.com"
 cc="alwaysdeone@gmail.com"
 
-live_cc="jegadeesan.velusamy@tecnotree.com;osikoya.oladayo@tecnotree.com;adetimilehin.hammed@tecnotree.com;chandra.mohan@tecnotree.com;eeswar.jagadisan@tecnotree.com;solomon.annan@tecnotree.com"
+live_cc="souvik.choudhury@tecnotree.com;jegadeesan.velusamy@tecnotree.com;osikoya.oladayo@tecnotree.com;adetimilehin.hammed@tecnotree.com;chandra.mohan@tecnotree.com;eeswar.jagadisan@tecnotree.com;solomon.annan@tecnotree.com"
