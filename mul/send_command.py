@@ -16,7 +16,6 @@
 
 import os, sys
 from decimal import *
-from traceback import print_exc
 from bs4 import BeautifulSoup
 
 from settings import *
@@ -56,6 +55,10 @@ def get_usage_details(msisdn):
   soup = BeautifulSoup(response)
 
   result_set = soup.find_all('usagecounterusagethresholdinfo')
+
+  if not result_set:
+    raise Exception(command, response)
+
   for r in result_set:
     if r.usagecounterid.string == '2':
       counter = r.usagecountermonetaryvalue.string
@@ -104,8 +107,7 @@ def main(cmd_file, deduct_counter=False):
           write_to_file(str(debug_info) + " " + error_codes[result], errors)
 
       except:
-        print_exc()
-        write_to_file(line, errors)
+        write_to_file(str(sys.exc_info()[1]), errors)
         continue
     os.remove(cmd_file)
 
