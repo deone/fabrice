@@ -1,7 +1,5 @@
 #!/bin/sh
 
-date
-
 if [ "$OSTYPE" == "darwin13" ]; then
     export FABRICE_DEBUG="true"
     export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice/"
