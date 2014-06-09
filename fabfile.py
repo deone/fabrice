@@ -22,7 +22,7 @@ script_cron_map = {
     'failed_sim_registrations': '55 08 * * *',
     'order_rejections_for_executed_provisioning_commands': '55 08 * * *',
     'total_uploaded_files': '55 08 * * *',
-    'provisioning_rejection': '55 08 * * *',
+    'provisioning_rejection': '00 06 * * *',
     'concierge_performance': '00 04 * * *',
     'data_offer_rental': '00 12 02 * *',
     'offer_rental': '00 12 02 * *',
