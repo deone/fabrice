@@ -7,7 +7,7 @@ sql_file_name=`echo $@ | rev | cut -d '/' -f 1  | rev | cut -d '.' -f 1`
 # Config
 . ${FABRICE_PATH}bulk/config.sh
 
-if [[ "$sql_file_name" == "ported_in" ]]; then
+if [ "$sql_file_name" == "ported_in" ] || [ "$sql_file_name" == "concierge_registered" ] || [ "$sql_file_name" == "eocn" ]; then
   results="${results_root_dir}/checklists/${sql_file_name}_${date_string}.csv"
 fi
 
