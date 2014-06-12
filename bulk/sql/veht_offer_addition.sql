@@ -1,3 +1,5 @@
+@@commands.sql
+
 SELECT MOBL_NUM_VOICE_V||','||'VEHT MO'||','||'ADD VAS'||','||',' 
 FROM GSM_sERVICE_MAST 
 WHERE STATUS_CODE_V='AC' 
