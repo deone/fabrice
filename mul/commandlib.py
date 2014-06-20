@@ -4,7 +4,7 @@ from settings import url
 
 def build_uc_command(msisdn):
     """ Build usage counter command with `msisdn` """
-    return "GET:ACCOUNTINFORMATION:2:SubscriberNumber,%s;" % msisdn
+    return "GET:AIRSUB:MSISDN,%s:MSISDNNAI,1:REQUESTEDOWNER,3;" % msisdn
 
 def build_mul_command(old_command, value):
     """ Build mul command with `old_command` and `value` """

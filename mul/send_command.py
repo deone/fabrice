@@ -54,21 +54,10 @@ def get_usage_details(msisdn):
 
   soup = BeautifulSoup(response)
 
-  result_set = soup.find_all('usagecounterusagethresholdinfo')
+  usage_values = str(soup).split(':')[-1]
+  parts = usage_values.split(',')
 
-  if not result_set:
-    raise Exception(command, response)
-
-  for r in result_set:
-    if r.usagecounterid.string == '2':
-      counter = r.usagecountermonetaryvalue.string
-
-  result = {
-    'counter': counter,
-    'threshold': soup.usagethresholdmonetaryvalue.string
-  }
-
-  return result
+  return {'counter': str(int(parts[4])/100), 'threshold': str(int(parts[8])/100)}
 
 def main(cmd_file, deduct_counter=False):
   try:
