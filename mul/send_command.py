@@ -22,12 +22,6 @@ from settings import *
 from commandlib import *
 from util import *
 
-
-def send_request(request):
-  """ Send `request` to url (already a part of `request`) and get response """
-  response = urllib2.urlopen(request)
-  return BeautifulSoup(response).resultmessage.string
-
 def get_msisdn_old_mul(command):
   """ If we can't find mul value in `command`, write msisdn to file and print message on console. Else, return msisdn and mul value """
   parts = command.split(',')
@@ -48,7 +42,7 @@ def compute_new_mul(old_mul, usage_counter):
 
 def get_usage_details(msisdn):
   """ Get values of usage counter and usage threshold for `msisdn` """
-  command = build_uc_command(msisdn)
+  command = build_simple_command(msisdn, "mul")
   request = build_request(command)
   response = send_request(request)
 
