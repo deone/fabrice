@@ -5,6 +5,11 @@ from settings import url
 
 def send_request(request):
   """ Send `request` to url (already a part of `request`) and get response """
+  proxy = urllib2.ProxyHandler({'http': 'http://oosikoya:@@bind025%@10.135.15.176:8080'})
+  auth = urllib2.HTTPBasicAuthHandler()
+  opener = urllib2.build_opener(proxy, auth, urllib2.HTTPHandler)
+  urllib2.install_opener(opener)
+
   response = urllib2.urlopen(request)
   return BeautifulSoup(response).resultmessage.string
 

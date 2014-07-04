@@ -50,6 +50,7 @@ def get_usage_details(msisdn):
 
   usage_values = str(soup).split(':')[-1]
   parts = usage_values.split(',')
+  print parts
 
   return {'counter': str(int(parts[4])/100), 'threshold': str(int(parts[8])/100)}
 
@@ -90,6 +91,9 @@ def main(cmd_file, deduct_counter=False):
           write_to_file(str(debug_info) + " " + error_codes[result], errors)
 
       except:
+        from traceback import print_exc
+        print_exc()
+        print sys.exc_info()
         write_to_file(str(sys.exc_info()[1]), errors)
         continue
     os.remove(cmd_file)
