@@ -1,0 +1,72 @@
+ASHANTI
+
+BRONG AHAFO
+
+CENTRAL
+
+EASTERN
+
+GREATER ACCRA
+
+NORTHERN
+
+UPPER EAST
+
+UPPER WEST
+
+VOLTA
+
+WESTERN
+
+
+PLANNED
+
+select a.region, to_char(b.startdate,'yyyy-mm-dd hh24mi') as startdate, b.discount as discount
+from cfg.v_cfgcell a, dte.discount_planned b
+where a.region = 'Western Region'
+and b.cellkey = a.cellkey
+and service='1'
+and startdate between to_date('2013-10-17 00' , 'yyyy-MM-dd HH24') and to_date( '2013-10-17 23' , 'yyyy-MM-dd HH24')
+---and b.startdate > to_date('2013-09-11 1700', 'yyyy-mm-dd hh24mi')
+---and b.startdate < to_date('2013-09-11 1900', 'yyyy-mm-dd hh24mi')
+order by 2,1 asc;
+
+
+ACTUAL
+
+select a.region, to_char(b.startdate,'yyyy-mm-dd hh24mi') as startdate, b.discount as discount
+from cfg.v_cfgcell a, dte.discount_actual b
+where a.region = 'Western Region'
+and b.cellkey = a.cellkey
+and service='1'
+and startdate between to_date('2013-10-22 00' , 'yyyy-MM-dd HH24') and to_date( '2013-10-22 23' , 'yyyy-MM-dd HH24')
+---and b.startdate > to_date('2013-09-11 1700', 'yyyy-mm-dd hh24mi')
+---and b.startdate < to_date('2013-09-11 1900', 'yyyy-mm-dd hh24mi')
+order by 2,1 asc;
+
+
+
+weighted average (New)
+
+
+select ddate, SUM(discount) , SUM(erlang*discount),COUNT(key), SUM(erlang)
+ , (SUM(discount)/COUNT(key)) "avg", (SUM(erlang*discount)/SUM(erlang)) "wt_avg" 
+from 
+(select to_char(a.startdate,'yyyy-MM-dd HH24') ddate, b.key, c.c_v_erlang as erlang,
+--b.ne,
+ discount from
+(select * from dte.discount_planned where service = 1) a,
+(select cellkey, key,ne from cfg.v_cfgcell where active=1 and region in ('Western Region')) b,
+(  SELECT startdate, cellkey, c_v_erlang FROM dte.cellradio2g60 
+        where trunc(startdate) = to_date(:startdate , 'yyyy-MM-dd')-7 
+               UNION
+               SELECT startdate, cellkey, c_v_erlang_best_cell
+                 FROM dte.cellradio3g60 where 
+                 trunc(startdate) = to_date(:startdate , 'yyyy-MM-dd')-7
+ ) c
+where a.cellkey = b.cellkey and a.cellkey=c.cellkey and a.startdate=c.startdate+7 and
+--discount < 95 and 
+trunc(a.startdate) = to_date(:startdate , 'yyyy-MM-dd')
+ order by a.startdate, ne
+)
+group by ddate order by ddate;
