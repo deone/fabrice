@@ -52,7 +52,17 @@ def get_usage_details(msisdn):
   parts = usage_values.split(',')
   print parts
 
-  return {'counter': str(int(parts[4])/100), 'threshold': str(int(parts[8])/100)}
+  if parts[2] == '4':
+    return {
+        'counter': str(int(parts[8])/100), 
+        'threshold': str(int(parts[12])/100)
+    }
+
+  if parts[2] == '2':
+    return {
+        'counter': str(int(parts[4])/100),
+        'threshold': str(int(parts[8])/100)
+    }
 
 def main(cmd_file, deduct_counter=False):
   try:
