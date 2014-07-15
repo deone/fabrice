@@ -50,19 +50,19 @@ def get_usage_details(msisdn):
 
   usage_values = str(soup).split(':')[-1]
   parts = usage_values.split(',')
-  print parts
 
-  if parts[2] == '4':
-    return {
-        'counter': str(int(parts[8])/100), 
-        'threshold': str(int(parts[12])/100)
-    }
+  if len(parts) > 10:
+    if parts[2] == '4':
+        return {
+            'counter': str(int(parts[8])/100), 
+            'threshold': str(int(parts[12])/100)
+        }
 
-  if parts[2] == '2':
-    return {
-        'counter': str(int(parts[4])/100),
-        'threshold': str(int(parts[8])/100)
-    }
+    if parts[2] == '2':
+        return {
+            'counter': str(int(parts[4])/100),
+            'threshold': str(int(parts[8])/100)
+        }
 
 def main(cmd_file, deduct_counter=False):
   try:
@@ -79,9 +79,10 @@ def main(cmd_file, deduct_counter=False):
 
         if deduct_counter:
           usage_details = get_usage_details(msisdn)
-          usage_counter = usage_details['counter']
-          new_mul = compute_new_mul(old_mul, usage_counter)
-          mul_command = build_mul_command(line, new_mul)
+          if usage_details:
+            usage_counter = usage_details['counter']
+            new_mul = compute_new_mul(old_mul, usage_counter)
+            mul_command = build_mul_command(line, new_mul)
         else:
           mul_command = line[:-1]
 
@@ -104,6 +105,7 @@ def main(cmd_file, deduct_counter=False):
         from traceback import print_exc
         print_exc()
         print sys.exc_info()
+
         write_to_file(str(sys.exc_info()[1]), errors)
         continue
     os.remove(cmd_file)
