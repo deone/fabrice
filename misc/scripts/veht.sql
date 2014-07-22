@@ -21,15 +21,19 @@ commit;
 	  
 -- 3. Upload offers on Abillity
 
--- 4. Check file upload status, STATUS_V should be 'Q'
+-- 4. Check whether file has been processed
+select * from cb_upload_request ur 
+where ur.INT_FILE_NAME_V='cs5_offer_cancel_21072014_05.csv';
+
+-- 5. Check file upload status, STATUS_V should be 'Q'
 select * from cb_upload_Status us 
 where us.FILENAME_V='veht_offer_cancel_08072014_01.csv';
 
--- 5. Check status of individual offers, STATUS_V above should have changed to 'U' or 'I'
+-- 6. Check status of individual offers, STATUS_V above should have changed to 'U' or 'I'
 select * from tmp_upload_dtls ud 
 where ud.FILE_NAME_V='veht_offer_cancel_08072014_01.csv';
 
--- 6. This query should return an empty result or pending VHT_PRO records
+-- 7. This query should return an empty result or pending VHT_PRO records
 select * from CB_SUBS_OFFER_Details sod 
 where sod.ACCOUNT_LINK_CODE_N in ( 
 select gsm.account_link_code_n 
@@ -40,8 +44,8 @@ from gsm_service_mast gsm WHERE status_code_v IN ('AC', 'SP')
 and status_optn_v='A'
 and offer_code_v in ('VEHT MO','VEHT MT','VHT_PRO');
 
--- 7. Run both these queries to update the pending VHT_PRO records in 6.
--- Rerun 6. to confirm. Result should be empty.
+-- 8. Run both these queries to update the pending VHT_PRO records in 6.
+-- Rerun 7. to confirm. Result should be empty.
 update cb_subs_pos_services sps1 set sps1.STATUS_OPTN_V='Q'
 where sps1.rowid in (
 select sps.rowid from cb_subs_pos_Services sps where sps.SERV_ACC_LINK_CODE_N in (
@@ -67,11 +71,21 @@ from gsm_service_mast gsm WHERE status_code_v IN ('AC', 'SP')
 	  
 commit;
 
--- 8. Prepare offer commands
+-- 9. Prepare offer commands
 -- ./bulk/messenger.sh bulk/sql/veht_offer_addition.sql
 
--- 9. Do steps 3, 4 and 5 to the offer addition file
+-- 10. Check whether file has been processed
+select * from cb_upload_request ur 
+where ur.INT_FILE_NAME_V='cs5_offer_cancel_21072014_05.csv';
 
--- 10. Update tmp table
+-- 11. Check file upload status, STATUS_V should be 'Q'
+select * from cb_upload_Status us 
+where us.FILENAME_V='veht_offer_cancel_08072014_01.csv';
+
+-- 12. Check status of individual offers, STATUS_V above should have changed to 'U' or 'I'
+select * from tmp_upload_dtls ud 
+where ud.FILE_NAME_V='veht_offer_cancel_08072014_01.csv';
+
+-- 13. Update tmp table
 UPDATE tmp_vehical_track set flag='Y' where trunc(date_d)>=trunc(sysdate);
 commit;
