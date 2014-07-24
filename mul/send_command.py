@@ -49,6 +49,8 @@ def get_usage_details(msisdn):
   soup = BeautifulSoup(response)
 
   usage_values = str(soup).split(':')[-1]
+  print usage_values
+
   parts = usage_values.split(',')
 
   if len(parts) > 10:
