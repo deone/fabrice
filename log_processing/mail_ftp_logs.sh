@@ -20,13 +20,13 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then
 fi
 
 if [[ "$FABRICE_DEBUG" == "true" ]]; then
-  logs_directory="$FABRICE_PATH/logs/logs_dir"
+  logs_directory="$FABRICE_PATH/log_processing/logs_dir"
 else
   logs_directory="/data5/log/FTP/NRTRDEOUT"
 fi
 
 today_log=`ls -Art $logs_directory | tail -n 1`
-hour_file="$FABRICE_PATH/logs/hour_file.txt"
+hour_file="$FABRICE_PATH/log_processing/hour_file.txt"
 last_run_hour=`cat $hour_file`
 
 if [[ $last_run_hour == 23 ]]; then
@@ -42,9 +42,10 @@ else
 fi
 
 log_file_name=`echo $today_log | cut -d '.' -f 1`
-out_file=$FABRICE_PATH/logs/out/${log_file_name}_${string}.txt
+out_file=$FABRICE_PATH/log_processing/out/${log_file_name}_${string}.txt
 
 grep $string $logs_directory/$today_log | grep 'successfully transferred' > $out_file
+wc -l $out_file >> $out_file
 
 echo $new_run_hour > $hour_file
 
