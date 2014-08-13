@@ -36,13 +36,16 @@ script_cron_map = {
 def archive():
     # 1. Archive app.
     local("mkdir -p build/fabrice")
-    local("mkdir -p build/fabrice/reports build/fabrice/log_processing build/fabrice/log_processing/out")
+    local("mkdir -p build/fabrice/reports build/fabrice/log_processing")
 
     local("cp reports/reporter.sh reports/mail.cfg.txt reports/reports.cfg.sh build/fabrice/reports/")
     local("cp log_processing/mail_ftp_logs.sh log_processing/*.txt build/fabrice/log_processing/")
 
     with lcd("build/fabrice/reports"):
 	local("mkdir out logs sql")
+
+    with lcd("build/fabrice/log_processing"):
+	local("mkdir out logs")
 
     local("cp reports/sql/*.sql build/fabrice/reports/sql/")
 
