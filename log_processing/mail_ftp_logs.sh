@@ -51,6 +51,6 @@ wc -l $out_file >> $out_file
 
 echo $new_run_hour > $hour_file
 
-email=$FABRICE_PATH/log_processing/out/email.txt
+email=$FABRICE_PATH/log_processing/email.txt
 
 mutt -s "NRTRDEOUT FTP Logs" -c osikoya.oladayo@tecnotree.com -a $out_file -- recipients < $email
