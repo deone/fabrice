@@ -38,13 +38,15 @@ else
 fi
 
 if [[ ${#new_run_hour} == 1 ]]; then
-  string="0$new_run_hour:00"
+  string="0$new_run_hour:"
 else
-  string="$new_run_hour:00"
+  string="$new_run_hour:"
 fi
 
 log_file_name=`echo $today_log | cut -d '.' -f 1`
-out_file=$FABRICE_PATH/log_processing/out/${log_file_name}_${string}.txt
+out_file=$FABRICE_PATH/log_processing/out/${log_file_name}_${string}00.txt
+
+echo $string
 
 grep $string $logs_directory/$today_log | grep 'successfully transferred' > $out_file
 wc -l $out_file >> $out_file
