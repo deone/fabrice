@@ -35,18 +35,21 @@ script_cron_map = {
 
 def archive():
     # 1. Archive app.
-    local("mkdir -p reports/build/fabrice/reports")
-    local("cp reports/reporter.sh reports/mail.cfg.txt reports/reports.cfg.sh reports/build/fabrice/reports/")
+    local("mkdir -p build/fabrice")
+    local("mkdir -p build/fabrice/reports build/fabrice/log_processing build/fabrice/log_processing/out")
 
-    with lcd("reports/build/fabrice/reports"):
+    local("cp reports/reporter.sh reports/mail.cfg.txt reports/reports.cfg.sh build/fabrice/reports/")
+    local("cp log_processing/mail_ftp_logs.sh log_processing/hour_file.txt build/fabrice/log_processing/")
+
+    with lcd("build/fabrice/reports"):
 	local("mkdir out logs sql")
 
-    local("cp reports/sql/*.sql reports/build/fabrice/reports/sql/")
+    local("cp reports/sql/*.sql build/fabrice/reports/sql/")
 
-    with lcd("reports/build/fabrice/reports/out"):
+    with lcd("build/fabrice/reports/out"):
 	local("mkdir emails files results")
 
-    with lcd("reports/build/"):
+    with lcd("build/"):
 	local("zip -r fabrice fabrice")
 
 def build_grep_string(job_list):
@@ -87,7 +90,7 @@ def deploy():
 	try:
 	    # 2. Copy archive over to host.
 	    local("echo 'Copying script archive to host...'")
-	    put("reports/build/fabrice.zip", "fabrice.zip")
+	    put("build/fabrice.zip", "fabrice.zip")
 
 	    # 3. Unzip archive/Deploy app.
 	    local("echo 'Deploying scripts...'")
@@ -100,8 +103,8 @@ def deploy():
 	    schedule(script_cron_map)
 	finally:
 	    local("echo 'Cleaning up litter...'")
-	    local("rm -rf reports/build/fabrice*")
-	    local("rm -rf reports/build")
+	    local("rm -rf build/fabrice*")
+	    local("rm -rf build")
 
 @task
 @roles('concierge', 'lnp', 'abillity', 'middleware')
