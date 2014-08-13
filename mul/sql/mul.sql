@@ -27,16 +27,21 @@ begin
 
     update CB_SERV_WISE_CS5_DETAILS set
     TOT_RENTAL_AMT_N=(select nvl(sum(ARTICLE_AMT_N),0) 
-			from CB_CYCLE_SERVICE_CHARGES a,CB_SCHEME_REFERENCE b
-			where account_link_code_n=l_account_link_code_n 
-			and status_optn_v='A' 
-			and b.SCHEME_REF_CODE_N=a.SCHEME_REF_CODE_N 
-			and b.SCHEME_TYPE_V='P')
+            from CB_CYCLE_SERVICE_CHARGES a,CB_SCHEME_REFERENCE b
+            where account_link_code_n=l_account_link_code_n 
+            and status_optn_v='A' 
+            and b.SCHEME_REF_CODE_N=a.SCHEME_REF_CODE_N 
+            and b.SCHEME_TYPE_V='P')
     where account_link_code_n=l_account_link_code_n;
 
     update CB_SERV_WISE_CS5_DETAILS 
     set CS5_CR_LIMIT_N=floor((l_cr_limit_n/1.15)-TOT_RENTAL_AMT_N), ABL_CR_LIMIT_N=l_cr_limit_n 
     where account_link_code_n=l_account_link_code_n;
+    
+    update CB_SERV_WISE_CS5_DETAILS 
+    set CS5_CR_LIMIT_N=0
+    where account_link_code_n=l_account_link_code_n
+    and floor((l_cr_limit_n/1.15)-TOT_RENTAL_AMT_N) <0;
 
     update CB_ADDNL_CREDIT_LIMIT 
     set cr_limit_status_v='Z' 
@@ -52,8 +57,8 @@ begin
 
     insert into tmp_text values(
        'SET:GSMSUB:MSISDN,233'||l_mobile_number_v||':DEDICATEDACCOUNT,SET,DEDICATEDACCOUNTID,11,DEDICATEDACCOUNTVALUENEW,'||
-	l_cs5_cr_limit_n||',DEDICATEDACCOUNTUNIT,1:ACCUMULATOR,SET,ACCUMULATORID,6,ACCUMULATORVALUEABSOLUTE,'||
-	l_cs5_cr_limit_n||':SHAREACCOUNT,SET,UTID,1,UTMVALUENEW,'||l_cs5_cr_limit_n||';'
+    l_cs5_cr_limit_n||',DEDICATEDACCOUNTUNIT,1:ACCUMULATOR,SET,ACCUMULATORID,6,ACCUMULATORVALUEABSOLUTE,'||
+    l_cs5_cr_limit_n||':SHAREACCOUNT,SET,UTID,1,UTMVALUENEW,'||l_cs5_cr_limit_n||';'
     );
 
     /* commit; */
