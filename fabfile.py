@@ -39,7 +39,7 @@ def archive():
     local("mkdir -p build/fabrice/reports build/fabrice/log_processing build/fabrice/log_processing/out")
 
     local("cp reports/reporter.sh reports/mail.cfg.txt reports/reports.cfg.sh build/fabrice/reports/")
-    local("cp log_processing/mail_ftp_logs.sh log_processing/hour_file.txt build/fabrice/log_processing/")
+    local("cp log_processing/mail_ftp_logs.sh log_processing/*.txt build/fabrice/log_processing/")
 
     with lcd("build/fabrice/reports"):
 	local("mkdir out logs sql")
