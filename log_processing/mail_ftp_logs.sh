@@ -21,8 +21,10 @@ fi
 
 if [[ "$FABRICE_DEBUG" == "true" ]]; then
   logs_directory="$FABRICE_PATH/log_processing/logs_dir"
+  recipients="adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com"
 else
   logs_directory="/data5/log/FTP/NRTRDEOUT"
+  recipients="kessien@mtn.com.gh;rjmalm@mtn.com.gh;vasare@mtn.com.gh;soakoto@mtn.com.gh;sathisha.hegde@tecnotree.com;adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com"
 fi
 
 today_log=`ls -Art $logs_directory | tail -n 1`
@@ -49,4 +51,6 @@ wc -l $out_file >> $out_file
 
 echo $new_run_hour > $hour_file
 
-mutt -s "Test" -c adetimilehin.hammed@tecnotree.com -a $out_file -- alwaysdeone@gmail.com < /dev/null
+email=$FABRICE_PATH/log_processing/out/email.txt
+
+mutt -s "NRTRDEOUT FTP Logs" -c osikoya.oladayo@tecnotree.com -a $out_file -- recipients < $email
