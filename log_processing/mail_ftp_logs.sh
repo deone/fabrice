@@ -22,12 +22,14 @@ fi
 if [[ "$FABRICE_DEBUG" == "true" ]]; then
   logs_directory="$FABRICE_PATH/log_processing/logs_dir"
   recipients="adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com"
+  date=`date -v -0d +"%Y%m%d"`
 else
   logs_directory="/data5/log/FTP/NRTRDEOUT"
   recipients="kessien@mtn.com.gh;rjmalm@mtn.com.gh;vasare@mtn.com.gh;soakoto@mtn.com.gh;sathisha.hegde@tecnotree.com;adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com"
+  date=`date +"%Y%m%d" -d today`
 fi
 
-today_log=`ls -Art $logs_directory | tail -n 1`
+today_log="FTP_NRTRDEOUT_${date}.log"
 hour_file="$FABRICE_PATH/log_processing/hour_file.txt"
 last_run_hour=`cat $hour_file`
 
@@ -45,8 +47,6 @@ fi
 
 log_file_name=`echo $today_log | cut -d '.' -f 1`
 out_file=$FABRICE_PATH/log_processing/out/${log_file_name}_${string}00.txt
-
-echo $string
 
 grep $string $logs_directory/$today_log | grep 'successfully transferred' > $out_file
 wc -l $out_file >> $out_file
