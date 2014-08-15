@@ -25,7 +25,7 @@ if [[ "$FABRICE_DEBUG" == "true" ]]; then
   date=`date -v -0d +"%Y%m%d"`
 else
   logs_directory="/data5/log/FTP/NRTRDEOUT"
-  recipients="kessien@mtn.com.gh;rjmalm@mtn.com.gh;vasare@mtn.com.gh;soakoto@mtn.com.gh;sathisha.hegde@tecnotree.com;adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com"
+  recipients="kessien@mtn.com.gh;rjmalm@mtn.com.gh;vasare@mtn.com.gh;soakoto@mtn.com.gh;sathisha.hegde@tecnotree.com;adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com;sajantuah@mtn.com.gh"
   date=`date +"%Y%m%d" -d today`
 fi
 
@@ -49,7 +49,7 @@ log_file_name=`echo $today_log | cut -d '.' -f 1`
 out_file=$FABRICE_PATH/log_processing/out/${log_file_name}_${string}00.txt
 
 grep $string $logs_directory/$today_log | grep 'successfully transferred' > $out_file
-wc -l $out_file >> $out_file
+wc -l $out_file | awk '{print $1}' >> $out_file
 
 echo $new_run_hour > $hour_file
 
