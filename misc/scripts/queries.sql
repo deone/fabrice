@@ -109,7 +109,7 @@ and offer_flag_v = 'F'; -- F denotes default
 
 --14. Check provisioning status
 select * from gsm_service_mast gt
-where gt.MOBL_NUM_VOICE_V='549576932';
+where gt.MOBL_NUM_VOICE_V='540100693';
 
-select * from cb_subs_provisioning csp where csp.ACCOUNT_LINK_CODE_N=9663919
+select * from cb_subs_provisioning csp where csp.ACCOUNT_LINK_CODE_N=38481266
 order by 3 desc;

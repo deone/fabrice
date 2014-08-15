@@ -18,20 +18,21 @@ commit;
 
 -- 2. Select offers to be deleted
 -- ./bulk/messenger.sh bulk/sql/veht_offer_cancel.sql
-	  
+
 -- 3. Upload offers on Abillity
 
 -- 4. Check whether file has been processed
 select * from cb_upload_request ur 
-where ur.INT_FILE_NAME_V='cs5_offer_cancel_21072014_05.csv';
+where ur.INT_FILE_NAME_V='veht_offer_cancel_12082014_01.csv';
 
 -- 5. Check file upload status, STATUS_V should be 'Q'
 select * from cb_upload_Status us 
-where us.FILENAME_V='veht_offer_cancel_08072014_01.csv';
+where us.FILENAME_V='veht_offer_cancel_12082014_01.csv';
 
--- 6. Check status of individual offers, STATUS_V above should have changed to 'U' or 'I'
-select * from tmp_upload_dtls ud 
-where ud.FILE_NAME_V='veht_offer_cancel_08072014_01.csv';
+-- 6. Check status of individual offers, 
+-- STATUS_V above should have changed to 'U' or 'I'
+select distinct ud.gen_string_1_v, status_v from tmp_upload_dtls ud 
+where ud.FILE_NAME_V='veht_offer_cancel_12082014_01.csv';
 
 -- 7. This query should return an empty result or pending VHT_PRO records
 select * from CB_SUBS_OFFER_Details sod 
@@ -39,7 +40,10 @@ where sod.ACCOUNT_LINK_CODE_N in (
 select gsm.account_link_code_n 
 from gsm_service_mast gsm WHERE status_code_v IN ('AC', 'SP')
       AND contract_type_v = 'N'
-      AND activation_date_d >= TRUNC (SYSDATE)                     -- -1/24
+	  and mobl_num_voice_v in (select 
+	  distinct ud.gen_string_1_v from tmp_upload_dtls ud 
+	  where ud.FILE_NAME_V='veht_offer_cancel_12082014_01.csv')
+      AND activation_date_d >= TRUNC(SYSDATE)
       AND tariff_code_v = 'VEHT')
 and status_optn_v='A'
 and offer_code_v in ('VEHT MO','VEHT MT','VHT_PRO');
@@ -52,10 +56,15 @@ select sps.rowid from cb_subs_pos_Services sps where sps.SERV_ACC_LINK_CODE_N in
  select gsm.account_link_code_n 
 from gsm_service_mast gsm WHERE status_code_v IN ('AC', 'SP')
       AND contract_type_v = 'N'
-      AND activation_date_d >= TRUNC (SYSDATE)                        -- -1/24
+	  and mobl_num_voice_v in (select 
+	  distinct ud.gen_string_1_v from tmp_upload_dtls ud 
+	  where ud.FILE_NAME_V='veht_offer_cancel_12082014_01.csv')
+      AND activation_date_d >= TRUNC(SYSDATE)
       AND tariff_code_v = 'VEHT')
       and sps.SERVICE_KEY_CODE_V='OFFC'
       and sps.STATUS_OPTN_V='PR');
+	 
+commit;
 	  
 update cb_schedules cs1 set cs1.STATUS_OPTN_V='Q'
 where cs1.rowid in (     
@@ -64,7 +73,10 @@ select cs.rowid from cb_schedules cs where cs.SCHDL_LINK_CODE_N in
  select gsm.account_link_code_n 
 from gsm_service_mast gsm WHERE status_code_v IN ('AC', 'SP')
       AND contract_type_v = 'N'
-      AND activation_date_d >= TRUNC (SYSDATE)                        -- -1/24
+	  and mobl_num_voice_v in (select 
+	  distinct ud.gen_string_1_v from tmp_upload_dtls ud 
+	  where ud.FILE_NAME_V='veht_offer_cancel_12082014_01.csv')
+      AND activation_date_d >= TRUNC (SYSDATE)
       AND tariff_code_v = 'VEHT')
       and sps.SERVICE_KEY_CODE_V='OFFC'
       and sps.STATUS_OPTN_V='Q'));
@@ -76,15 +88,15 @@ commit;
 
 -- 10. Check whether file has been processed
 select * from cb_upload_request ur 
-where ur.INT_FILE_NAME_V='cs5_offer_cancel_21072014_05.csv';
+where ur.INT_FILE_NAME_V='veht_offer_addition_12082014_01.csv';
 
 -- 11. Check file upload status, STATUS_V should be 'Q'
 select * from cb_upload_Status us 
-where us.FILENAME_V='veht_offer_cancel_08072014_01.csv';
+where us.FILENAME_V='veht_offer_addition_12082014_01.csv';
 
 -- 12. Check status of individual offers, STATUS_V above should have changed to 'U' or 'I'
 select * from tmp_upload_dtls ud 
-where ud.FILE_NAME_V='veht_offer_cancel_08072014_01.csv';
+where ud.FILE_NAME_V='veht_offer_addition_12082014_01.csv';
 
 -- 13. Update tmp table
 UPDATE tmp_vehical_track set flag='Y' where trunc(date_d)>=trunc(sysdate);
