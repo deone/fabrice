@@ -20,17 +20,17 @@ report_capital_name=`echo $report_verbose_name | awk '{ print toupper($0) }'`
 # Dev
 if [[ "$OSTYPE" == "darwin13" ]]; then
     export FABRICE_DEBUG="true"
-    export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice/"
+    export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice"
     . ~/.profile
 # Live
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     export FABRICE_DEBUG="false"
-    export FABRICE_PATH="/home/pm_client/fabrice/"
+    export FABRICE_PATH="/home/pm_client/fabrice"
     . ~/.bash_profile
 fi
 
 # Source config file
-. ${FABRICE_PATH}reports/reports.cfg.sh
+. ${FABRICE_PATH}/reports/reports.cfg.sh
 
 # Output files
 if [[ "$report_name" == "sms_queue" ]]; then
@@ -47,15 +47,15 @@ fi
 if [[ "$report_name" != "sms_queue" ]]; then
     # We're passing $value to the query. Those that don't need $value will ignore it.
     value=101000001${query_date}0
-    sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql $value > $sql_results
+    sqlplus -S $conn_string @${reports_sql_path}/${report_name}.sql $value > $sql_results
     if [[ "$report_name" == "data_offer_rental" ]]; then
 	echo "" >> $sql_results
-	sqlplus -S $conn_string @${reports_sql_path}${report_name}_count.sql $value >> $sql_results
+	sqlplus -S $conn_string @${reports_sql_path}/${report_name}_count.sql $value >> $sql_results
     fi
 fi
 
 if [[ "$report_name" == "sms_queue" ]]; then
-    sqlplus -S $conn_string @${reports_sql_path}${report_name}.sql > $sql_results
+    sqlplus -S $conn_string @${reports_sql_path}/${report_name}.sql > $sql_results
     count=`cat $sql_results | sed 's/COUNT(1)//' | sed 's/-*$//' | grep -v "^$" | grep -v "rows" | awk '{print $1}'`
 fi
 
