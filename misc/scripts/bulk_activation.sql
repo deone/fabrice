@@ -2,13 +2,13 @@
 -- 1. Select SIMs.
 select * from gsm_sims_master
 where status_v = 'F' and
-sim_num_v between '8923301001002866274' and '8923301001002867264';
+sim_num_v between '8923301001002880275' and '8923301001002881265';
 
 -- 2. Update fields, after checking with 1.
 update gsm_sims_master
 set switch_num_n = 1, sim_category_code_v = 'NORN', pre_post_sim_v = 'N'
-where sim_num_v between '8923301001002865276' 
-and '8923301001002866266';
+where sim_num_v between '8923301001002880275' 
+and '8923301001002881265';
 
 commit;
 
@@ -33,8 +33,10 @@ delete from cb_advance_rental where scheme_ref_code_n = 2993;
 commit;
 
 -- Check file progress
-select * from cb_upload_request cur where cur.int_file_name_v = 'BXCAUG3.csv';
+select * from cb_upload_request cur where cur.int_file_name_v = 'BXCAUG9.csv';
 
-select * from cb_upload_status cus where cus.filename_v = 'BXCAUG3.csv';
+select * from cb_upload_status cus where cus.filename_v = 'BXCAUG9.csv';
 
-select status_v from tmp_upload_dtls tud where tud.file_name_v = 'BXCAUG3.csv';
+select status_v, rejected_reason_v 
+from tmp_upload_dtls tud 
+where tud.file_name_v = 'BXCAUG9.csv';
