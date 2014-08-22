@@ -44,13 +44,14 @@ def archive():
     with lcd("build/fabrice/reports"):
 	local("mkdir out logs sql")
 
+    with lcd("build/fabrice/reports/out"):
+	local("mkdir emails files results")
+
     with lcd("build/fabrice/log_processing"):
 	local("mkdir out logs")
 
     local("cp reports/sql/*.sql build/fabrice/reports/sql/")
-
-    with lcd("build/fabrice/reports/out"):
-	local("mkdir emails files results")
+    get('/home/pm_client/fabrice/log_processing/hour_file.txt', 'build/fabrice/log_processing/hour_file.txt')
 
     with lcd("build/"):
 	local("zip -r fabrice fabrice")
@@ -81,7 +82,7 @@ def test():
     # Test-run scripts
     local("echo 'Testing scripts locally...'")
     for script in script_cron_map.iterkeys():
-	local("sh reports/reporter.sh %s.sh" % script)
+	local("sh reports/reporter.sh reports/sql/%s.sql" % script)
 
 @task
 @hosts('pm_client@10.139.41.18')
