@@ -2,15 +2,15 @@
 
 # Automate all items in checklist that give a count value as result.
 
-export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice/"
+export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice"
 
 # Config
-. ${FABRICE_PATH}bulk/config.sh
+. ${FABRICE_PATH}/bulk/config.sh
 
 # Source SQL file
 . ${sql_dir}/count.sql.sh
 
-out_dir="${FABRICE_PATH}bulk/out"
+out_dir="${FABRICE_PATH}/bulk/out"
 
 find ${out_dir} -name '*.txt' -mtime +1 -exec rm -f {} \;
 

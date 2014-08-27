@@ -10,8 +10,10 @@ else
   key="BULOFFC"
 fi
 
+export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice"
+
 # Config
-. ${FABRICE_PATH}bulk/config.sh
+. ${FABRICE_PATH}/bulk/config.sh
 
 sqlplus -S $conn_string @${sql_dir}/${sql_file_name}.sql > $temp_file
 
