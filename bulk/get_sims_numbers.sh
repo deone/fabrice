@@ -2,8 +2,6 @@
 
 . $FABRICE_PATH/lib.sh
 
-. ${FABRICE_PATH}/bulk/config.sh
-
 if [[ -z "$@" || -z "$2" || -z "$3" ]]; then
   echo "Usage: ./bulk/get_sims_numbers.sh ECG 8923301001002873270 8923301001002874260"
   exit

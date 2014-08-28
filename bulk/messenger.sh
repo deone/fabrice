@@ -2,8 +2,6 @@
 
 . $FABRICE_PATH/lib.sh
 
-. ${FABRICE_PATH}/bulk/config.sh
-
 sql_file_name=`echo $@ | rev | cut -d '/' -f 1  | rev | cut -d '.' -f 1`
 action=`echo $sql_file_name | rev | cut -d '_' -f 1 | rev`
 dir=`echo $sql_file_name | cut -d '_' -f 1`

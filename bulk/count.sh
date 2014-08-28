@@ -2,10 +2,7 @@
 
 # Automate all items in checklist that give a count value as result.
 
-export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice"
-
-# Config
-. ${FABRICE_PATH}/bulk/config.sh
+. $FABRICE_PATH/lib.sh
 
 # Source SQL file
 . ${sql_dir}/count.sql.sh

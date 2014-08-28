@@ -1,5 +1,11 @@
 
 date_string=`date +'%d%m%Y'`
+conn_string="tt_mso/ttmso1@TTPROD"
+
+sql_dir="${FABRICE_PATH}/bulk/sql"
+results_root_dir="/Users/deone/bulk_files"
+
+temp_file="temp.txt"
 
 create_file_header() {
   upload_key=$1
