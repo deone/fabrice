@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice"
+. $FABRICE_PATH/lib.sh
 
 . ${FABRICE_PATH}/bulk/config.sh
 
@@ -45,19 +45,9 @@ if [[ "$1" == "BXC" ]]; then
   awk -v a="N,$1,.,1,1006775194,E,N,N," -v b=",NORN,M,APN01," -v c=",N,BXC10MB,N,,N,,E,1,1,P . O. BOX 281 TRADE FAIR,P . O. BOX 281 TRADE FAIR,P . O. BOX 281 TRADE FAIR,AC,GHA,,0,0,23/6/2012,$today,31/12/2099,,31/12/2099,V,Y,Y,CCMD,ICT,ICT,POSTPAID,GSM,508,M,7/19/1981,,1,1006775194,30/12/2099,,,,Y,N,N,D,N,$today,B,$1,1006775194,,,,Y,N,N,N,N,N,,N" 'NR==FNR{d[NR]=$1; next} {print a d[FNR] b $1 c}' $sims $numbers > $temp_file
 fi
 
-out_file_dir="$results_root_dir/$1"
-file_name_prefix="$out_file_dir/$1$date_string"
+file_header=$(create_file_header "BULACT4" $FABRICE_PATH/temp.txt)
+file=$(serialize_file_name $results_root_dir/$1 $1)
 
-today_file_count=`ls $file_name_prefix* | wc -l`
-
-file_serial_no=$(( today_file_count+1 ))
-file_name="${file_name_prefix}_${file_serial_no}.csv"
-
-key="BULACT4"
-rowcount=`wc -l $temp_file`
-rowcount_number=`echo $rowcount | cut -d ' ' -f 1`
-line="$key,$rowcount_number"
-
-echo $line > $file_name
-cat $temp_file >> $file_name
+echo $file_header > $file
+cat $temp_file >> $file
 # fi
