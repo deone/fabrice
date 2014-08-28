@@ -20,7 +20,7 @@ sqlplus -S $conn_string @${sql_dir}/${sql_file_name}.sql > $temp_file
 # Make this into a function
 rowcount=`wc -l $temp_file`
 rowcount_number=`echo $rowcount | cut -d ' ' -f 1`
-line="$key, $rowcount_number"
+line="$key,$rowcount_number"
 
 results="${results_root_dir}/$dir/${sql_file_name}_${date_string}.csv"
 
