@@ -12,20 +12,12 @@
 # Mail $new_run_hour.txt
 
 if [[ "$OSTYPE" == "darwin13" ]]; then
-  export FABRICE_DEBUG="true"
-  export FABRICE_PATH="/Users/deone/.virtualenvs/fabrice/fabrice"
-elif [[ "$OSTYPE" == "linux-gnu" ]]; then
-  export FABRICE_DEBUG="false"
-  export FABRICE_PATH="/home/pm_client/fabrice"
-fi
-
-if [[ "$FABRICE_DEBUG" == "true" ]]; then
   logs_directory="$FABRICE_PATH/log_processing/logs_dir"
   recipients="adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com"
   date=`date -v -0d +"%Y%m%d"`
-else
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then
   logs_directory="/data5/log/FTP/NRTRDEOUT"
-  recipients="kessien@mtn.com.gh;rjmalm@mtn.com.gh;vasare@mtn.com.gh;soakoto@mtn.com.gh;sathisha.hegde@tecnotree.com;adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com;sajantuah@mtn.com.gh"
+  recipients="kessien@mtn.com.gh;rjmalm@mtn.com.gh;vasare@mtn.com.gh;soakoto@mtn.com.gh;sathisha.hegde@tecnotree.com;adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com;sajantuah@mtn.com.gh;EODwamena@mtn.com.gh"
   date=`date +"%Y%m%d" -d today`
 fi
 
