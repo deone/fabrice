@@ -3,3 +3,5 @@ Automate bulk upload
 2. Set feedback off and write 'BULLOFFI, ' plus count of lines in file to top of file.
 3. Automate process check. ps -ef | grep java, Up
 4. Can we just copy the bulk files to their destination on the server instead of uploading them via abillity? I doubt this because of the other options that are selected on the bulk upload page.
+
+Split bulk/get_sims_numbers.sh into 2 separate functionalities. One to prepare the sims and numbers files and the other to create the bulk file.

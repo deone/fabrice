@@ -1,6 +1,6 @@
 
 date_string=`date +'%d%m%Y'`
-conn_string="tt_mso/ttmso1@TTPROD"
+db="tt_mso/ttmso1@TTPROD"
 
 sql_dir="${FABRICE_PATH}/bulk/sql"
 results_root_dir="/Users/deone/bulk_files"
@@ -27,4 +27,8 @@ serialize_file_name()  {
   serial_no=$(( $today_file_count+1 ))
 
   echo "${wildcard}${serial_no}.csv"
+}
+
+get_query_results() {
+  sqlplus -S $db @$1 > $2
 }
