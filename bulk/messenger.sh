@@ -12,7 +12,7 @@ else
   key="BULOFFC"
 fi
 
-sqlplus -S $conn_string @${sql_dir}/${sql_file_name}.sql > $temp_file
+get_query_results ${sql_dir}/${sql_file_name}.sql $temp_file
 
 file_header=$(create_file_header $key $temp_file)
 
