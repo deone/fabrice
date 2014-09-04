@@ -11,6 +11,8 @@
 # Write $new_run_hour to file.
 # Mail $new_run_hour.txt
 
+. ~/.bash_profile
+
 if [[ "$OSTYPE" == "darwin13" ]]; then
   logs_directory="$FABRICE_PATH/log_processing/logs_dir"
   recipients="adetimilehin.hammed@tecnotree.com;solomon.annan@tecnotree.com"
@@ -21,8 +23,8 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then
   date=`date +"%Y%m%d" -d today`
 fi
 
-today_log="FTP_NRTRDEOUT_${date}.log"
-hour_file="$FABRICE_PATH/log_processing/hour_file.txt"
+today_log=FTP_NRTRDEOUT_${date}.log
+hour_file=$FABRICE_PATH/log_processing/hour_file.txt
 last_run_hour=`cat $hour_file`
 
 if [[ $last_run_hour == 23 ]]; then
@@ -40,7 +42,7 @@ fi
 log_file_name=`echo $today_log | cut -d '.' -f 1`
 out_file=$FABRICE_PATH/log_processing/out/${log_file_name}_${string}00.txt
 
-grep $string $logs_directory/$today_log | grep 'successfully transferred' > $out_file
+grep " "$string $logs_directory/$today_log | grep 'successfully transferred' > $out_file
 wc -l $out_file | awk '{print $1}' >> $out_file
 
 echo $new_run_hour > $hour_file
