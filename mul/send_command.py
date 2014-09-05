@@ -46,10 +46,13 @@ def get_usage_details(msisdn):
   request = build_request(command)
   response = send_request(request)
 
+  return response
+
+def extract_usage_values(response):
   soup = BeautifulSoup(response)
 
   usage_values = str(soup).split(':')[-1]
-  print usage_values
+  # print usage_values
 
   parts = usage_values.split(',')
 
@@ -81,10 +84,17 @@ def main(cmd_file, deduct_counter=False):
 
         if deduct_counter:
           usage_details = get_usage_details(msisdn)
-          if usage_details:
-            usage_counter = usage_details['counter']
+
+          result = is_valid(usage_details)
+
+          if result is True:
+            values = extract_usage_values(usage_details)
+            usage_counter = values['counter']
             new_mul = compute_new_mul(old_mul, usage_counter)
             mul_command = build_mul_command(line, new_mul)
+          else:
+            write_to_file(usage_details + " " + error_codes[result], errors)
+            continue
         else:
           mul_command = line[:-1]
 
