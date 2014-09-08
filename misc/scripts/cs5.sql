@@ -6,15 +6,15 @@
 --3. Perform checks for executed and rejected offers.
 -- Status should be Q, then P if file has been processed.
 select * from cb_upload_request ur 
-where ur.INT_FILE_NAME_V='cs5_offer_cancel_21082014_02.csv';
+where ur.INT_FILE_NAME_V='cs5_offer_addition_04092014.csv';
 -- Status is initially U after upload, 
 -- should change to I if file is successfully processed, R if there are rejections.
 select * from cb_upload_status us 
-where us.FILENAME_V='cs5_offer_cancel_21082014_02.csv';
+where us.FILENAME_V='cs5_offer_addition_04092014.csv';
 -- Entries in this table should have status as E if executed and R if rejected. 
 -- The reasons for the rejections are present in the REJECTED_REASON_V field.
 select status_v, rejected_reason_v from tmp_upload_dtls ud 
-where ud.FILE_NAME_V='cs5_offer_cancel_21082014_02.csv';
+where ud.FILE_NAME_V='cs5_offer_addition_04092014.csv';
 
 --4. Do some updates for rejected offers
 -- These 3 queries must return the same row count 
@@ -23,7 +23,7 @@ where ud.FILE_NAME_V='cs5_offer_cancel_21082014_02.csv';
 select * from CB_SUBS_PROVISIONING sp 
 where sp.STATUS_V='R' and sp.ACCOUNT_LINK_CODE_N in 
 (select distinct s.ACCOUNT_LINK_CODE_N 
-from  TMP_CS5_AFFECTED_SERVICES s 
+from TMP_CS5_AFFECTED_SERVICES s 
 where DATE_D>=trunc(sysdate)) and sp.ACTION_CODE_V='OFFC';
 
 select * from cb_subs_pos_services sps 
@@ -64,7 +64,7 @@ update cb_schedules cs1 set cs1.STATUS_OPTN_V='Q'
 where cs1.rowid in (select cs.rowid from cb_schedules cs 
 where cs.SCHDL_LINK_CODE_N in ( select sps.SCHDL_LINK_CODE_N 
 from cb_subs_pos_services sps where sps.SERV_ACC_LINK_CODE_N in 
-(select distinct s.ACCOUNT_LINK_CODE_N from  TMP_CS5_AFFECTED_SERVICES s 
+(select distinct s.ACCOUNT_LINK_CODE_N from TMP_CS5_AFFECTED_SERVICES s 
 where DATE_D>=trunc(sysdate) and sps.SERVICE_KEY_CODE_V='OFFC' 
 and sps.STATUS_OPTN_V='Q')));
 
@@ -78,15 +78,26 @@ commit;
 --7. Perform checks for executed and rejected offers.
 -- Status should be Q, then P if file has been processed.
 select * from cb_upload_request ur 
-where ur.INT_FILE_NAME_V='cs5_offer_addition_21082014_02.csv';
+where ur.INT_FILE_NAME_V='cs5_offer_addition_04092014.csv';
 -- Status is initially U after upload, 
 -- should change to I if file is successfully processed, R if there are rejections.
 select * from cb_upload_status us 
-where us.FILENAME_V='cs5_offer_addition_21082014_02.csv';
+where us.FILENAME_V='cs5_offer_addition_04092014.csv';
 -- Entries in this table should have status as E if executed and R if rejected. 
 -- The reasons for the rejections are present in the REJECTED_REASON_V field.
 select * from tmp_upload_dtls ud 
-where ud.FILE_NAME_V='cs5_offer_addition_21082014_02.csv';
+where ud.FILE_NAME_V='cs5_offer_addition_04092014.csv';
+
+select * 
+from CB_SUBS_PROVISIONING csp 
+where ACCOUNT_LINK_CODE_N 
+in
+(select account_link_code_n from gsm_service_mast
+where mobl_num_voice_v in
+(select gen_string_1_v from tmp_upload_dtls
+where file_name_v in ('cs5_offer_addition_04092014.csv')))
+and ACTION_CODE_V='OFFI'
+and STATUS_V='P';
 
 --8.
 delete from tmp_cs5_affected_services;
@@ -107,6 +118,7 @@ select ip_address_v from cb_scheme_ip_address_list where scheme_ref_code_n=2271
 update isp_ip_address set status_v = 'B' where ip_address_v in (
 select ip_address_v from cb_scheme_ip_address_list where scheme_ref_code_n=2271
 ) and status_v = 'F';
+
 commit;
 
 -- Get IP addresses assigned to the mobile numbers in question
@@ -115,7 +127,12 @@ select mobl_num_voice_v from gsm_service_mast where account_link_code_n
 in (select distinct account_link_code_n from tmp_cs5_affected_services)
 );
 
-select * from gsm_service_mast where account_link_code_n = 38651535;
+select * from cb_subs_offer_ip_dtls where mobile_number_v = '240013407';
+select * from tmp_cs5_affected_services;
+select mobl_num_voice_v from gsm_service_mast where account_link_code_n in 
+(
+select account_link_code_n from tmp_cs5_affected_services
+);
 
 -- Add IP addresses to file like this; 240012312,APNSD,ADD VAS,172.22.119.9,
 
@@ -123,53 +140,9 @@ select * from gsm_service_mast where account_link_code_n = 38651535;
 delete from tmp_cs5_affected_services
 where account_link_code_n in (
 select account_link_code_n from gsm_service_mast where mobl_num_voice_v in (
-'240014617',
-'240015263',
-'240014596',
-'240014338',
-'240015219',
-'240014408',
-'240014463',
-'240014496',
-'240014487',
-'240014346',
-'240014384',
-'240014498',
-'240014458',
-'240014792',
-'240014934',
-'240016285',
-'240016252',
-'240014358',
-'240014791',
-'240015962',
-'240014614',
-'240016004',
-'240014310',
-'240016063',
-'240014870',
-'240014465',
-'240014649',
-'240014859',
-'240014981',
-'240014609',
-'240014589',
-'240014711',
-'240015735',
-'240015921',
-'240014331',
-'240015492',
-'240015554',
-'240014811',
-'240015117',
-'240015319',
-'240015307',
-'240014532',
-'240016038',
-'240017121',
-'240015385',
-'240014373',
-'240014661'
+'240026056',
+'240025675',
+'240021035'
 )
 );
 commit;

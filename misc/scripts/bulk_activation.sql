@@ -7,9 +7,16 @@ and '8923301001002884269';
 commit;
 
 -- 2. Select SIMs.
-select sim_num_v from gsm_sims_master
-where status_v = 'F' and
-sim_num_v between '8923301001002883279' and '8923301001002884269';
+select *
+-- sim_num_v 
+from gsm_sims_master
+where -- status_v = 'F' and
+sim_num_v between '8923301001002846276' and '8923301001002847266';
+
+select * from gsm_service_mast where sim_num_v='8923301001002846276';
+
+select * from tmp_upload_dtls where file_name_v like 'BXC%' 
+and gen_string_9_v='8923301001002846276';
 
 -- 3. Fetch mobile numbers
 select mobile_number_v from gsm_mobile_master where category_code_v = 'APN01'
@@ -17,7 +24,7 @@ and status_v = 'F' and rownum < 101
 order by 1 desc;
 
 -- 4. Get subscriber_code for use on @billity
-select subscriber_code_n from cb_account_master where account_code_n=1006637095;
+select subscriber_code_n from cb_account_master where account_code_n=1006775194;
 
 select * from cb_package where package_code_v = 'BXC10MB';
 
@@ -35,13 +42,13 @@ delete from cb_advance_rental where scheme_ref_code_n = 2993;
 commit;
 
 -- Check file progress
-select * from cb_upload_request cur where cur.int_file_name_v = 'ECGAUG05.csv';
+select * from cb_upload_request cur where cur.int_file_name_v = 'BXC_05092014_3.csv';
 
-select * from cb_upload_status cus where cus.filename_v = 'ECGAUG05.csv';
+select * from cb_upload_status cus where cus.filename_v = 'BXC_05092014_3.csv';
 
 select status_v, rejected_reason_v 
 from tmp_upload_dtls tud 
-where tud.file_name_v = 'ECGAUG05.csv';
+where tud.file_name_v = 'BXC_05092014_3.csv';
 
 ---- to check the provisioning status of various actions like INST,OFFC,OFFI
 -- update cb_subs_provisioning set status_v='Q'
@@ -52,11 +59,31 @@ in
 (select account_link_code_n from gsm_service_mast
 where mobl_num_voice_v in
 (select gen_string_13_v from tmp_upload_dtls
-where file_name_v='ECGAUG05.csv'))
+where file_name_v 
+in ('BXC28082014_1.csv', 
+'BXC_03092014_1.csv', 
+'BXC28082014_2.csv', 
+'BXC_29082014_1.csv',
+'BXC_04092014_1.csv',
+'BXC_04092014_2.csv',
+'BXC_05092014_3.csv')))
 and ACTION_CODE_V='INST'
 and STATUS_V='R';
 
 -- commit;
+
+---- to prepare the bulk activation report
+select gsm.ACCOUNT_CODE_N,gsm.MOBL_NUM_VOICE_V,gsm.SIM_NUM_V,gsm.IMSI_NUM_N,
+(select cp.package_name_v from cb_package cp 
+where cp.PACKAGE_CODE_V=gsm.package_codE_v ) PACKAGE_V,
+od.IP_ADDRESS_V
+from gsm_Service_mast gsm,CB_SUBS_OFFER_IP_DTLS od 
+ where gsm.MOBL_NUM_VOICE_V in ( 
+select ud.gen_string_13_V from tmp_upload_dtls ud where ud.FILE_NAME_V 
+in (
+'ECG_29082014_1.csv'
+))
+and gsm.MOBL_NUM_VOICE_V=od.MOBILE_NUMBER_V;
 
 ---- to create the bulk offer cancelation file
 select gen_string_13_v||',BXC10MB,DELETE' from tmp_upload_dtls
@@ -122,14 +149,3 @@ where scheme_ref_code_n=2994)
 and isp.STATUS_V='F';
 
 commit;
-
----- to prepare the bulk activation report
-select gsm.ACCOUNT_CODE_N,gsm.MOBL_NUM_VOICE_V,gsm.SIM_NUM_V,gsm.IMSI_NUM_N,
-(select cp.package_name_v from cb_package cp 
-where cp.PACKAGE_CODE_V=gsm.package_codE_v ) PACKAGE_V,
-od.IP_ADDRESS_V
-from gsm_Service_mast gsm,CB_SUBS_OFFER_IP_DTLS od 
- where gsm.MOBL_NUM_VOICE_V in ( 
-select ud.gen_string_13_V from tmp_upload_dtls ud where ud.FILE_NAME_V 
-in ('BXCAUG11a.csv'))
-and gsm.MOBL_NUM_VOICE_V=od.MOBILE_NUMBER_V;
