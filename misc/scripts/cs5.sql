@@ -6,15 +6,18 @@
 --3. Perform checks for executed and rejected offers.
 -- Status should be Q, then P if file has been processed.
 select * from cb_upload_request ur 
-where ur.INT_FILE_NAME_V='cs5_offer_addition_04092014.csv';
+where ur.INT_FILE_NAME_V='cs5_offer_cancel_09092014_1.csv';
 -- Status is initially U after upload, 
 -- should change to I if file is successfully processed, R if there are rejections.
 select * from cb_upload_status us 
-where us.FILENAME_V='cs5_offer_addition_04092014.csv';
+where us.FILENAME_V='cs5_offer_cancel_09092014_1.csv';
 -- Entries in this table should have status as E if executed and R if rejected. 
 -- The reasons for the rejections are present in the REJECTED_REASON_V field.
 select status_v, rejected_reason_v from tmp_upload_dtls ud 
-where ud.FILE_NAME_V='cs5_offer_addition_04092014.csv';
+where ud.FILE_NAME_V='cs5_offer_cancel_09092014_1.csv';
+
+select * from cb_subs_offer_details where account_link_code_n in
+(select distinct account_link_code_n from tmp_cs5_affected_services);
 
 --4. Do some updates for rejected offers
 -- These 3 queries must return the same row count 
@@ -78,26 +81,32 @@ commit;
 --7. Perform checks for executed and rejected offers.
 -- Status should be Q, then P if file has been processed.
 select * from cb_upload_request ur 
-where ur.INT_FILE_NAME_V='cs5_offer_addition_04092014.csv';
+where ur.INT_FILE_NAME_V='cs5_offer_addition_09092014_1.csv';
 -- Status is initially U after upload, 
 -- should change to I if file is successfully processed, R if there are rejections.
 select * from cb_upload_status us 
-where us.FILENAME_V='cs5_offer_addition_04092014.csv';
+where us.FILENAME_V='cs5_offer_addition_09092014_1.csv';
 -- Entries in this table should have status as E if executed and R if rejected. 
 -- The reasons for the rejections are present in the REJECTED_REASON_V field.
 select * from tmp_upload_dtls ud 
-where ud.FILE_NAME_V='cs5_offer_addition_04092014.csv';
+where ud.FILE_NAME_V='cs5_offer_addition_09092014_1.csv';
 
 select * 
 from CB_SUBS_PROVISIONING csp 
 where ACCOUNT_LINK_CODE_N 
 in
-(select account_link_code_n from gsm_service_mast
-where mobl_num_voice_v in
-(select gen_string_1_v from tmp_upload_dtls
-where file_name_v in ('cs5_offer_addition_04092014.csv')))
-and ACTION_CODE_V='OFFI'
-and STATUS_V='P';
+(--select account_link_code_n from gsm_service_mast
+--where mobl_num_voice_v in
+--(select gen_string_1_v from tmp_upload_dtls
+--where file_name_v in ('cs5_offer_addition_09092014_1.csv'))
+'39020623',
+'39020301',
+'39020302',
+'39020300',
+'39020299'
+);
+--and ACTION_CODE_V='OFFI'
+--and STATUS_V='P';
 
 --8.
 delete from tmp_cs5_affected_services;

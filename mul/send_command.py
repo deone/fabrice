@@ -119,7 +119,8 @@ def main(cmd_file, deduct_counter=False):
 
                 write_to_file(str(sys.exc_info()[1]), errors)
                 continue
-            os.remove(cmd_file)
+
+    os.remove(cmd_file)
 
 
 if __name__ == "__main__":
