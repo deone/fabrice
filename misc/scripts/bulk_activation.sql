@@ -1,12 +1,15 @@
--- check whether range has been used
+-- check whether range has been used. If empty, it hasn't been used.
 select * from gsm_service_mast 
-where sim_num_v between '8923301001002897279' and '8923301001002897519';
+where sim_num_v between '8923301001002957271' and '8923301001002958261';
+
+8923301001002954278 8923301001002955267
+8923301001002947272 8923301001002948262
+8923301001002928272 8923301001002929262
 
 -- 1. Update fields for SIM range
 update gsm_sims_master
 set switch_num_n = 1, sim_category_code_v = 'NORN', pre_post_sim_v = 'N'
-where sim_num_v between '8923301001002897279' 
-and '8923301001002897519';
+where sim_num_v between '8923301001002957271' and '8923301001002958261';
 
 commit;
 
@@ -15,29 +18,51 @@ select
 -- *
 sim_num_v 
 from gsm_sims_master
-where -- status_v = 'F' and
-sim_num_v between '8923301001002897279' 
-and '8923301001002897519';
+where status_v = 'F' and
+sim_num_v between '8923301001002957271' and '8923301001002958261';
 
-select * from gsm_service_mast where sim_num_v='8923301001002846276';
-
-select * from tmp_upload_dtls where file_name_v like 'BXC%' 
-and gen_string_9_v='8923301001002846276';
+-- Check whether numbers are really free
+select mobl_num_voice_v 
+from gsm_service_mast 
+where mobl_num_voice_v in
+(select mobile_number_v 
+from gsm_mobile_master 
+where category_code_v = 'APN01'
+and status_v = 'F');
 
 -- 3. Fetch mobile numbers
-select mobile_number_v from gsm_mobile_master where category_code_v = 'APN01'
-and status_v = 'F' and rownum < 251
+select mobile_number_v 
+from gsm_mobile_master 
+where category_code_v = 'APN01'
+and status_v = 'F' and rownum < 101
 order by 1 desc;
 
 -- 4. Get subscriber_code for use on @billity
-select subscriber_code_n from cb_account_master where account_code_n=1006637095;
+select subscriber_code_n from cb_account_master where account_code_n=1006775194;
 
 -- Check file progress
-select * from cb_upload_request cur where cur.int_file_name_v = 'ECG_10092014_2.csv';
-select * from cb_upload_status cus where cus.filename_v = 'ECG_10092014_2.csv';
-select status_v, rejected_reason_v
+select * from cb_upload_request cur where cur.int_file_name_v = 'BXC_26092014_1.csv';
+select * from cb_upload_status cus where cus.filename_v = 'BXC_26092014_1.csv';
+
+-- Copy file to 16 server
+-- scp veht_offer_addition_24092014_2.csv abillityapp@10.139.41.16:/abilityapp/abillityapp/INTF_UPLOADS/bulk_activities/
+
+-- Update upload tables
+update cb_upload_request
+set int_process_status_v = 'Q'
+where int_file_name_v = 'BXC_26092014_1.csv';
+
+update cb_upload_status
+set status_v = 'Q'
+where filename_v = 'BXC_26092014_1.csv';
+
+commit;
+
+select 
+-- *
+gen_string_13_v, gen_string_9_v, status_v, rejected_reason_v
 from tmp_upload_dtls tud 
-where tud.file_name_v = 'ECG_10092014_2.csv';
+where tud.file_name_v = 'BXC_26092014_1.csv';
 -- and rejected_reason_v is not null;
 
 --- to check (or update) the provisioning status of 
@@ -51,7 +76,7 @@ in
 where mobl_num_voice_v in
 (select gen_string_13_v from tmp_upload_dtls
 where file_name_v 
-in ('ECG_29082014_1.csv')))
+in ('BXC_17092014_1.csv', 'BXC_17092014_2.csv', 'BXC19092014_2.csv')))
 and ACTION_CODE_V='INST'
 and STATUS_V='P';
 
@@ -66,13 +91,7 @@ from gsm_Service_mast gsm,CB_SUBS_OFFER_IP_DTLS od
  where gsm.MOBL_NUM_VOICE_V in ( 
 select ud.gen_string_13_V from tmp_upload_dtls ud where ud.FILE_NAME_V 
 in (
-'BXC28082014_1.csv', 
-'BXC_03092014_1.csv', 
-'BXC28082014_2.csv', 
-'BXC_29082014_1.csv',
-'BXC_04092014_1.csv',
-'BXC_04092014_2.csv',
-'BXC_05092014_3.csv'
+'BXC_17092014_1.csv', 'BXC_17092014_2.csv', 'BXC19092014_2.csv'
 ))
 and gsm.MOBL_NUM_VOICE_V=od.MOBILE_NUMBER_V;
 

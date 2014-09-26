@@ -111,5 +111,17 @@ and offer_flag_v = 'F'; -- F denotes default
 select * from gsm_service_mast gt
 where gt.MOBL_NUM_VOICE_V='540100693';
 
+--15. get account code, name, mobile number, status and offers
+select a.account_code_n, a.subs_name_v,
+a.mobl_num_voice_v, 
+a.status_code_v, 
+c.offer_desc_v 
+from gsm_service_mast a, cb_subs_offer_details b, cb_offers c 
+where account_code_n = 1006686720 
+and a.account_link_code_n = b.account_link_code_n
+and b.offer_code_v = c.offer_code_v
+and b.status_optn_v = 'A'
+and a.status_code_v <> 'ER';
+
 select * from cb_subs_provisioning csp where csp.ACCOUNT_LINK_CODE_N=38481266
 order by 3 desc;
