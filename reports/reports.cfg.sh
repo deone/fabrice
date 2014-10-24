@@ -2,9 +2,9 @@
 
 # DB
 if [[ "$report_name" == "concierge_performance" ]]; then
-    conn_string="concierge_app_gha/concierge_app_gha@TTPROD"
+  conn_string="concierge_app_gha/concierge_app_gha@TTPROD"
 else
-    conn_string="abillity_view/abillity_view@TTPROD"
+  conn_string="abillity_view/abillity_view@TTPROD"
 fi
 
 # files
@@ -19,36 +19,36 @@ mailcfg="${FABRICE_PATH}/reports/mail.cfg.txt"
 period=`awk -v r=$report_name '{ if ($1 == r) print $3; }' $mailcfg`
 
 if [[ "$FABRICE_DEBUG" == "false" ]]; then
-    date_flag="-d "$period
+  date_flag="-d "$period
 else
-    if [[ "$period" == "yesterday" ]]; then
-	date_flag="-v -1d"
-    elif [[ "$period" == "last-month" ]]; then
-	date_flag="-v -1m"
-    else
-	date_flag="-v -0d"
-    fi
+  if [[ "$period" == "yesterday" ]]; then
+    date_flag="-v -1d"
+  elif [[ "$period" == "last-month" ]]; then
+    date_flag="-v -1m"
+  else
+    date_flag="-v -0d"
+  fi
 fi
 
 # date
 if [[ "$FABRICE_DEBUG" == "true" ]]; then
-    query_date=`date $date_flag +"%Y%m"`
-    if [[ "$period" == "last-month" ]]; then
-	text_date=`date $date_flag +"%B %Y"`
-	_text_date_=`date $date_flag +"%B_%Y"`
-    else
-	text_date=`date $date_flag +"%d %B %Y"`
-	_text_date_=`date $date_flag +"%d_%B_%Y"`
-    fi
+  query_date=`date $date_flag +"%Y%m"`
+  if [[ "$period" == "last-month" ]]; then
+    text_date=`date $date_flag +"%B %Y"`
+    _text_date_=`date $date_flag +"%B_%Y"`
+  else
+    text_date=`date $date_flag +"%d %B %Y"`
+    _text_date_=`date $date_flag +"%d_%B_%Y"`
+  fi
 else
-    query_date=`date +"%Y%m" $date_flag`
-    if [[ "$period" == "last-month" ]]; then
-	text_date=`date +"%B %Y" $date_flag`
-	_text_date_=`date +"%B_%Y" $date_flag`
-    else
-	text_date=`date +"%d %B %Y" $date_flag`
-	_text_date_=`date +"%d_%B_%Y" $date_flag`
-    fi
+  query_date=`date +"%Y%m" $date_flag`
+  if [[ "$period" == "last-month" ]]; then
+    text_date=`date +"%B %Y" $date_flag`
+    _text_date_=`date +"%B_%Y" $date_flag`
+  else
+    text_date=`date +"%d %B %Y" $date_flag`
+    _text_date_=`date +"%d_%B_%Y" $date_flag`
+  fi
 fi
 
 # email
