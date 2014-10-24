@@ -3,7 +3,7 @@
 . $FABRICE_PATH/lib.sh
 
 if [[ -z "$@" || -z "$1" ]]; then
-  # "Usage: ./bulk/get_sims_numbers.sh last_name package_name contract_no"
+  # "Usage: ./bulk/get_sims_numbers.sh last_name package_code contract_no"
   echo "Usage: ./bulk/get_sims_numbers.sh ECG ECG60 1006637095"
   exit
 fi
